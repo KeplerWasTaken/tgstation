@@ -580,9 +580,6 @@ GLOBAL_REAL(Master, /datum/controller/master)
 
 		sleep(world.tick_lag * (processing * sleep_delta))
 
-
-
-
 // This is what decides if something should run.
 /datum/controller/master/proc/CheckQueue(list/subsystemstocheck)
 	. = 0 //so the mc knows if we runtimed

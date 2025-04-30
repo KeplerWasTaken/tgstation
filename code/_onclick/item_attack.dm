@@ -160,8 +160,16 @@
 	if(..())
 		return TRUE
 	if(!(obj_flags & CAN_BE_HIT))
-		return FALSE
+		return attacking_item.attack_no_hit_atom(src, user, params)
 	return attacking_item.attack_atom(src, user, params)
+
+//epicstation change
+#define COMSIG_ITEM_ATTACK_OBJ_NOHIT "item_attack_obj_nohit"
+/obj/proc/attack_no_hit_atom(obj/item/attacking_item, mob/user, params)
+	if(SEND_SIGNAL(src, COMSIG_ITEM_ATTACK_OBJ_NOHIT, attacking_item, user) & COMPONENT_CANCEL_ATTACK_CHAIN)
+		return TRUE
+	return FALSE
+//end
 
 /mob/living/item_interaction(mob/living/user, obj/item/tool, list/modifiers, is_right_clicking)
 	// Surgery and such happens very high up in the interaction chain, before parent call
@@ -238,8 +246,34 @@
 		user.client.give_award(/datum/award/achievement/misc/selfouch, user)
 
 	user.do_attack_animation(target_mob)
+
+	// epicstation item attack changes
+	var/startingHp = target_mob.health
+	var/mobStatusBeforeHit = target_mob.stat
+	//end
+
 	target_mob.attacked_by(src, user)
 
+	//epicstation change
+	var/resultingHp = target_mob.health
+	var/mobStatusAfterHit = target_mob.stat
+
+	var/damageDealt = max(startingHp - resultingHp, 0)
+	var/wasKilled = mobStatusBeforeHit != DEAD && mobStatusAfterHit == DEAD
+
+	to_chat(user, "You hit: [target_mob.real_name] with [uppertext(damtype)] for: base of [force] dealing a total of [damageDealt] damage")
+	if (wasKilled)
+		to_chat(user, "...and killed them!")
+	if(user == target_mob)
+		to_chat(user, "You also hit yourself for that much damage")
+	else
+		//Not self damage, log it
+		if (user.missions_mission)
+			user.missions_mission.ConsiderLogging(user, target_mob, damageDealt, damtype, wasKilled)
+		else if (target_mob.missions_mission)
+			target_mob.missions_mission.ConsiderLogging(user, target_mob, damageDealt, damtype, wasKilled)
+	//end
+	
 	log_combat(user, target_mob, "attacked", src.name, "(COMBAT MODE: [uppertext(user.combat_mode)]) (DAMTYPE: [uppertext(damtype)])")
 	add_fingerprint(user)
 

@@ -114,6 +114,9 @@
 #define LOG_CATEGORY_TRANSPORT "transport"
 #define LOG_CATEGORY_VIRUS "virus"
 #define LOG_CATEGORY_CAVE_GENERATION "cave-generation"
+//epicstation edit
+#define LOG_CATEGORY_DUNGEON_GENERATION "dungeon-generation"
+//end of edit
 
 // Admin categories
 #define LOG_CATEGORY_ADMIN "admin"

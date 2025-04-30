@@ -129,6 +129,34 @@
 		affected_turf.air_update_turf(TRUE, TRUE)
 		affected_turf.levelupdate()
 
+// Epicstation edit, alternate to load_new_z so maps can be placed at the bottom left
+/datum/map_template/proc/load_new_z_bottomleft(secret = FALSE)
+	var/x = 1
+	var/y = 1
+
+	var/datum/space_level/level = SSmapping.add_new_zlevel(name, secret ? ZTRAITS_AWAY_SECRET : ZTRAITS_AWAY, contain_turfs = FALSE)
+	var/datum/parsed_map/parsed = load_map(
+		file(mappath),
+		x,
+		y,
+		level.z_value,
+		no_changeturf = (SSatoms.initialized == INITIALIZATION_INSSATOMS),
+		place_on_top = should_place_on_top,
+		new_z = TRUE,
+	)
+	var/list/bounds = parsed.bounds
+	if(!bounds)
+		return FALSE
+
+	require_area_resort()
+	//initialize things that are normally initialized after map load
+	initTemplateBounds(bounds)
+	smooth_zlevel(level.z_value)
+	log_game("Z-level [name] loaded at [x],[y],[level.z_value]")
+
+	return level
+// edit end
+
 /datum/map_template/proc/load_new_z(secret = FALSE)
 	var/x = round((world.maxx - width) * 0.5) + 1
 	var/y = round((world.maxy - height) * 0.5) + 1

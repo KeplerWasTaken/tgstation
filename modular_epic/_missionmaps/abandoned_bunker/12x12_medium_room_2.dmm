@@ -1,0 +1,209 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"a" = (
+/obj/machinery/door/airlock/grunge,
+/turf/open/floor/plating,
+/area/planet/mission/dangerous)
+"f" = (
+/turf/open/floor/iron/smooth_half,
+/area/planet/mission/dangerous)
+"k" = (
+/obj/structure/fluff/empty_sleeper,
+/obj/effect/dungeongen/helper/dungeon_main_objective,
+/turf/open/floor/iron/smooth_half,
+/area/planet/mission/dangerous)
+"o" = (
+/obj/structure/fluff/empty_sleeper,
+/turf/open/floor/iron/smooth_half,
+/area/planet/mission/dangerous)
+"t" = (
+/turf/closed/wall,
+/area/planet/mission/dangerous)
+"w" = (
+/obj/machinery/door/airlock/grunge,
+/turf/open/floor/iron/smooth,
+/area/planet/mission/dangerous)
+"y" = (
+/obj/structure/fluff/empty_sleeper,
+/obj/effect/dungeongen/helper/dungeon_monster_spawn,
+/turf/open/floor/iron/smooth_half,
+/area/planet/mission/dangerous)
+"E" = (
+/obj/effect/dungeongen/helper/dungeon_monster_spawn,
+/turf/open/floor/iron/smooth_half,
+/area/planet/mission/dangerous)
+"I" = (
+/obj/effect/dungeongen/helper/dungeon_monster_spawn,
+/turf/open/floor/iron/smooth,
+/area/planet/mission/dangerous)
+"Q" = (
+/turf/open/floor/iron/smooth,
+/area/planet/mission/dangerous)
+
+(1,1,1) = {"
+Q
+Q
+Q
+Q
+Q
+Q
+Q
+Q
+Q
+Q
+Q
+Q
+"}
+(2,1,1) = {"
+Q
+t
+t
+t
+I
+t
+t
+t
+t
+t
+Q
+I
+"}
+(3,1,1) = {"
+Q
+t
+o
+t
+Q
+t
+y
+t
+o
+t
+Q
+Q
+"}
+(4,1,1) = {"
+Q
+t
+f
+a
+Q
+a
+E
+t
+f
+a
+Q
+Q
+"}
+(5,1,1) = {"
+Q
+t
+k
+t
+Q
+t
+k
+t
+k
+t
+Q
+Q
+"}
+(6,1,1) = {"
+Q
+t
+t
+t
+Q
+t
+t
+t
+t
+t
+Q
+Q
+"}
+(7,1,1) = {"
+Q
+t
+o
+t
+Q
+t
+o
+t
+o
+t
+Q
+Q
+"}
+(8,1,1) = {"
+Q
+t
+E
+w
+Q
+w
+E
+t
+f
+a
+Q
+Q
+"}
+(9,1,1) = {"
+Q
+t
+k
+t
+Q
+t
+k
+t
+k
+t
+Q
+Q
+"}
+(10,1,1) = {"
+Q
+t
+t
+t
+Q
+t
+t
+t
+t
+t
+I
+Q
+"}
+(11,1,1) = {"
+Q
+Q
+Q
+Q
+Q
+Q
+Q
+Q
+Q
+Q
+Q
+Q
+"}
+(12,1,1) = {"
+Q
+Q
+Q
+I
+Q
+Q
+Q
+Q
+Q
+Q
+Q
+Q
+"}

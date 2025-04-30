@@ -38,6 +38,9 @@
 		/datum/computer_file/program/themeify,
 		/datum/computer_file/program/ntnetdownload,
 		/datum/computer_file/program/filemanager,
+		//epicstation add missionfinder program to pda
+		/datum/computer_file/program/missionfinder,
+		//epicstation edit end
 	)
 
 	///The program currently active on the tablet.

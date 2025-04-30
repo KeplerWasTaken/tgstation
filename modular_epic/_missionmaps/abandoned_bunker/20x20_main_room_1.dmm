@@ -1,0 +1,710 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"a" = (
+/turf/closed/wall/r_wall,
+/area/planet/mission/dangerous)
+"b" = (
+/turf/open/floor/iron/dark/side{
+	dir = 8
+	},
+/area/planet/mission/dangerous)
+"d" = (
+/turf/open/floor/iron/dark/side{
+	dir = 1
+	},
+/area/planet/mission/dangerous)
+"e" = (
+/turf/open/floor/wood,
+/area/planet/mission/dangerous)
+"f" = (
+/obj/effect/spawner/structure/window/reinforced,
+/obj/structure/barricade/wooden/crude,
+/obj/machinery/door/poddoor,
+/turf/open/floor/iron/dark,
+/area/planet/mission/dangerous)
+"g" = (
+/obj/structure/toilet{
+	dir = 4
+	},
+/obj/structure/sink/directional/south,
+/obj/structure/mirror/directional/north,
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"h" = (
+/obj/machinery/door/airlock/command/glass,
+/obj/structure/barricade/wooden/crude,
+/obj/machinery/door/poddoor,
+/obj/effect/turf_decal/tile/blue/half/contrasted{
+	dir = 8
+	},
+/turf/open/floor/iron/dark,
+/area/planet/mission/dangerous)
+"j" = (
+/obj/effect/turf_decal/tile/blue/half/contrasted,
+/turf/open/floor/iron/dark,
+/area/planet/mission/dangerous)
+"l" = (
+/obj/effect/turf_decal/tile/red/half/contrasted{
+	dir = 4
+	},
+/turf/open/floor/iron/dark,
+/area/planet/mission/dangerous)
+"m" = (
+/turf/open/floor/iron/dark/corner{
+	dir = 1
+	},
+/area/planet/mission/dangerous)
+"n" = (
+/obj/machinery/door/airlock/command,
+/turf/open/floor/iron/dark,
+/area/planet/mission/dangerous)
+"o" = (
+/obj/effect/turf_decal/tile/red/half/contrasted{
+	dir = 4
+	},
+/obj/effect/dungeongen/helper/dungeon_monster_spawn,
+/turf/open/floor/iron/dark,
+/area/planet/mission/dangerous)
+"p" = (
+/turf/open/floor/iron/dark,
+/area/planet/mission/dangerous)
+"q" = (
+/obj/machinery/door/airlock/security,
+/obj/structure/barricade/wooden/crude,
+/turf/open/floor/iron/dark,
+/area/planet/mission/dangerous)
+"r" = (
+/obj/effect/turf_decal/tile/blue/half/contrasted{
+	dir = 4
+	},
+/turf/open/floor/iron/dark,
+/area/planet/mission/dangerous)
+"s" = (
+/obj/effect/dungeongen/helper/dungeon_monster_spawn,
+/turf/open/floor/iron/dark,
+/area/planet/mission/dangerous)
+"t" = (
+/obj/effect/dungeongen/helper/dungeon_monster_spawn,
+/obj/effect/turf_decal/tile/blue/half/contrasted{
+	dir = 1
+	},
+/turf/open/floor/iron/dark,
+/area/planet/mission/dangerous)
+"u" = (
+/obj/structure/rack,
+/obj/effect/turf_decal/tile/red/anticorner/contrasted{
+	dir = 4
+	},
+/obj/effect/spawner/random/contraband/armory,
+/obj/effect/spawner/random/contraband/armory,
+/turf/open/floor/iron/dark,
+/area/planet/mission/dangerous)
+"v" = (
+/obj/structure/barricade/wooden,
+/obj/machinery/door/airlock/command,
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"w" = (
+/obj/effect/dungeongen/helper/dungeon_monster_spawn,
+/turf/open/floor/iron/dark/corner{
+	dir = 8
+	},
+/area/planet/mission/dangerous)
+"x" = (
+/obj/machinery/door/airlock/command/glass,
+/obj/structure/barricade/wooden/crude,
+/obj/machinery/door/poddoor,
+/obj/effect/turf_decal/tile/blue/half/contrasted{
+	dir = 4
+	},
+/turf/open/floor/iron/dark,
+/area/planet/mission/dangerous)
+"y" = (
+/obj/machinery/door/airlock/security,
+/turf/open/floor/iron/dark,
+/area/planet/mission/dangerous)
+"z" = (
+/obj/effect/dungeongen/helper/dungeon_monster_spawn,
+/turf/open/floor/plating,
+/area/planet/mission/dangerous)
+"A" = (
+/obj/machinery/shower/directional/east,
+/obj/structure/curtain,
+/obj/effect/dungeongen/helper/dungeon_main_objective,
+/turf/open/floor/noslip,
+/area/planet/mission/dangerous)
+"B" = (
+/obj/machinery/door/airlock/command,
+/obj/structure/barricade/wooden/crude,
+/obj/machinery/door/poddoor,
+/obj/effect/turf_decal/tile/blue/half/contrasted{
+	dir = 1
+	},
+/turf/open/floor/iron/dark,
+/area/planet/mission/dangerous)
+"C" = (
+/obj/structure/frame/computer,
+/obj/effect/turf_decal/tile/red/half/contrasted{
+	dir = 4
+	},
+/turf/open/floor/iron/dark,
+/area/planet/mission/dangerous)
+"D" = (
+/obj/structure/window/reinforced/spawner/directional/east,
+/obj/structure/closet/crate/wooden,
+/turf/open/floor/wood,
+/area/planet/mission/dangerous)
+"E" = (
+/turf/open/floor/iron,
+/area/planet/mission/dangerous)
+"F" = (
+/obj/effect/turf_decal/tile/blue/half/contrasted{
+	dir = 1
+	},
+/turf/open/floor/iron/dark,
+/area/planet/mission/dangerous)
+"G" = (
+/obj/machinery/door/airlock/command,
+/obj/structure/barricade/wooden/crude,
+/obj/machinery/door/poddoor,
+/obj/effect/turf_decal/tile/blue/half/contrasted,
+/turf/open/floor/iron/dark,
+/area/planet/mission/dangerous)
+"H" = (
+/turf/open/floor/iron/dark/corner{
+	dir = 4
+	},
+/area/planet/mission/dangerous)
+"I" = (
+/obj/effect/turf_decal/tile/red/half/contrasted{
+	dir = 8
+	},
+/turf/open/floor/iron/dark,
+/area/planet/mission/dangerous)
+"K" = (
+/obj/item/bedsheet/captain,
+/obj/structure/bed,
+/obj/machinery/door/window/right/directional/north,
+/obj/structure/window/reinforced/spawner/directional/east,
+/turf/open/floor/wood,
+/area/planet/mission/dangerous)
+"L" = (
+/turf/open/floor/iron/dark/corner,
+/area/planet/mission/dangerous)
+"M" = (
+/turf/open/floor/iron/dark/side,
+/area/planet/mission/dangerous)
+"N" = (
+/obj/structure/bed,
+/obj/effect/turf_decal/tile/red/half/contrasted{
+	dir = 8
+	},
+/obj/effect/dungeongen/helper/dungeon_monster_spawn,
+/turf/open/floor/iron/dark,
+/area/planet/mission/dangerous)
+"O" = (
+/obj/effect/dungeongen/helper/dungeon_monster_spawn,
+/turf/open/floor/iron,
+/area/planet/mission/dangerous)
+"P" = (
+/turf/open/floor/iron/dark/side{
+	dir = 4
+	},
+/area/planet/mission/dangerous)
+"Q" = (
+/obj/structure/table/wood,
+/turf/open/floor/wood,
+/area/planet/mission/dangerous)
+"R" = (
+/obj/structure/bed,
+/obj/effect/turf_decal/tile/red/half/contrasted{
+	dir = 8
+	},
+/turf/open/floor/iron/dark,
+/area/planet/mission/dangerous)
+"S" = (
+/obj/effect/turf_decal/tile/blue/half/contrasted{
+	dir = 8
+	},
+/turf/open/floor/iron/dark,
+/area/planet/mission/dangerous)
+"T" = (
+/obj/effect/turf_decal/tile/blue/anticorner/contrasted{
+	dir = 1
+	},
+/turf/open/floor/iron/dark,
+/area/planet/mission/dangerous)
+"U" = (
+/turf/open/floor/plating,
+/area/planet/mission/dangerous)
+"V" = (
+/obj/structure/rack,
+/obj/effect/turf_decal/tile/red/half/contrasted{
+	dir = 4
+	},
+/obj/effect/spawner/random/contraband/armory,
+/obj/effect/spawner/random/contraband/armory,
+/turf/open/floor/iron/dark,
+/area/planet/mission/dangerous)
+"W" = (
+/obj/effect/dungeongen/helper/dungeon_monster_spawn,
+/turf/open/floor/iron/dark/side{
+	dir = 4
+	},
+/area/planet/mission/dangerous)
+"X" = (
+/obj/machinery/door/airlock/maintenance,
+/turf/open/floor/iron/dark,
+/area/planet/mission/dangerous)
+"Y" = (
+/obj/machinery/door/airlock/security,
+/obj/effect/turf_decal/tile/red/half/contrasted{
+	dir = 4
+	},
+/turf/open/floor/iron/dark,
+/area/planet/mission/dangerous)
+"Z" = (
+/obj/effect/dungeongen/helper/dungeon_monster_spawn,
+/obj/effect/turf_decal/tile/blue/half/contrasted,
+/turf/open/floor/iron/dark,
+/area/planet/mission/dangerous)
+
+(1,1,1) = {"
+E
+E
+E
+E
+E
+E
+E
+E
+E
+E
+E
+E
+E
+E
+E
+E
+E
+E
+E
+E
+"}
+(2,1,1) = {"
+E
+L
+P
+W
+W
+P
+P
+P
+P
+P
+P
+P
+W
+P
+P
+P
+P
+P
+H
+O
+"}
+(3,1,1) = {"
+E
+M
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+d
+O
+"}
+(4,1,1) = {"
+E
+M
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+d
+E
+"}
+(5,1,1) = {"
+E
+M
+a
+a
+p
+s
+p
+p
+p
+p
+p
+p
+p
+p
+p
+p
+a
+a
+d
+E
+"}
+(6,1,1) = {"
+E
+M
+a
+a
+X
+a
+a
+a
+a
+F
+s
+j
+a
+a
+a
+q
+a
+a
+d
+E
+"}
+(7,1,1) = {"
+E
+M
+a
+a
+U
+a
+g
+A
+a
+F
+p
+j
+a
+I
+I
+p
+a
+a
+d
+E
+"}
+(8,1,1) = {"
+E
+M
+a
+a
+U
+a
+v
+a
+a
+a
+F
+Z
+a
+C
+l
+l
+a
+a
+d
+E
+"}
+(9,1,1) = {"
+O
+M
+a
+a
+U
+a
+e
+K
+D
+a
+F
+j
+a
+a
+f
+f
+a
+a
+d
+E
+"}
+(10,1,1) = {"
+E
+M
+a
+a
+U
+a
+e
+Q
+Q
+a
+F
+p
+j
+a
+T
+S
+h
+S
+S
+E
+"}
+(11,1,1) = {"
+E
+M
+a
+a
+z
+a
+e
+e
+e
+n
+p
+s
+j
+a
+t
+p
+x
+r
+r
+O
+"}
+(12,1,1) = {"
+E
+M
+a
+a
+U
+a
+n
+a
+a
+a
+a
+p
+j
+a
+B
+G
+a
+a
+d
+E
+"}
+(13,1,1) = {"
+E
+M
+a
+a
+U
+a
+p
+u
+V
+V
+a
+p
+s
+p
+p
+j
+a
+a
+d
+E
+"}
+(14,1,1) = {"
+E
+M
+a
+a
+U
+a
+p
+p
+p
+p
+y
+p
+a
+a
+a
+a
+a
+a
+d
+E
+"}
+(15,1,1) = {"
+E
+M
+a
+a
+U
+a
+a
+a
+a
+a
+a
+p
+a
+N
+R
+R
+a
+a
+d
+E
+"}
+(16,1,1) = {"
+E
+M
+a
+a
+U
+z
+U
+U
+z
+U
+X
+p
+Y
+l
+o
+l
+a
+a
+d
+E
+"}
+(17,1,1) = {"
+E
+M
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+d
+O
+"}
+(18,1,1) = {"
+E
+M
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+d
+E
+"}
+(19,1,1) = {"
+E
+w
+b
+b
+b
+b
+b
+b
+b
+b
+b
+b
+b
+b
+b
+b
+b
+b
+m
+E
+"}
+(20,1,1) = {"
+E
+E
+E
+E
+E
+E
+E
+E
+O
+E
+E
+E
+E
+E
+E
+O
+E
+E
+E
+E
+"}

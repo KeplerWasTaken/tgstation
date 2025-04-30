@@ -74,7 +74,8 @@ GLOBAL_LIST_INIT(high_priority_sentience, typecacheof(list(
 
 	if(!potential.len)
 		return WAITING_FOR_SOMETHING
-	if(!candidates.len)
+	// epicstation fix
+	if(!candidates || !candidates.len)
 		return NOT_ENOUGH_PLAYERS
 
 	var/spawned_animals = 0

@@ -1,3 +1,8 @@
+//epicstation edit adds 2 defines for marker types
+#define MISSIONS_MARKER_AT_BASE "marker_base"
+#define MISSIONS_MARKER_AT_MISSION "marker_mission"
+//END
+
 /obj/vehicle
 	name = "generic vehicle"
 	desc = "Yell at coderbus."
@@ -34,6 +39,12 @@
 	///This vehicle will follow us when we move (like atrailer duh)
 	var/obj/vehicle/trailer
 	var/are_legs_exposed = FALSE
+
+	// EPICSTATION EDIT
+
+	// Used by goofy ahhh mission vehicles
+	var/vehicle_location = MISSIONS_MARKER_AT_BASE
+	// END
 
 /datum/armor/obj_vehicle
 	melee = 30

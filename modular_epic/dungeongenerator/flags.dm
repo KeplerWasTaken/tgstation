@@ -1,0 +1,5 @@
+#define DUNGEONGEN_ROOM_STARTING "Arrivals for vehicle"
+
+#define DUNGEONGEN_FLAG_ROOM (1 << 0)
+#define DUNGEONGEN_FLAG_CORRIDOR (1 << 1)
+#define DUNGEONGEN_FLAG_EXTERNALWALL (1 << 2)

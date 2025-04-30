@@ -316,6 +316,9 @@
 
 	var/mob/living/living_target = target
 
+	//epicstation edits ahead
+
+	var/health_before = living_target.health
 	if(blocked != 100) // not completely blocked
 		var/obj/item/bodypart/hit_bodypart = living_target.get_bodypart(hit_limb_zone)
 		if (damage && damage_type == BRUTE)
@@ -361,6 +364,13 @@
 	if(reagents?.reagent_list)
 		reagent_note = "REAGENTS: [pretty_string_from_reagent_list(reagents.reagent_list)]"
 
+	//epicstation edit
+	var/health_after = living_target.health
+	if (ismob(firer))
+		to_chat(firer, "You shot [living_target.name] for [health_before-health_after] points of damage")
+	if (living_target.ckey)
+		to_chat(living_target, "[firer.name] shot you fpr [health_before-health_after] points of damage")
+	//end
 	if(ismob(firer) && !do_not_log)
 		log_combat(firer, living_target, "shot", src, reagent_note)
 		return BULLET_ACT_HIT
@@ -529,7 +539,30 @@
 	if(mode == PROJECTILE_PIERCE_HIT)
 		++pierces
 	hit_something = TRUE
+	//epicstation projectile hitting thing for mission logging
+	var/mob/living/mobfirer = null
+	var/mob/living/mobtarget = null
+	var/mobtarget_health_before
+	var/mob_status_before
+
+	if (isliving(firer))
+		mobfirer = firer
+	if (isliving(target))
+		mobtarget = target
+		mobtarget_health_before = mobtarget.health
+		mob_status_before = mobtarget.stat
+	//end
 	var/result = target.bullet_act(src, def_zone, mode == PROJECTILE_PIERCE_HIT)
+	//epicstation edit hitting thing for mission logging part 2
+	if (mobfirer && mobtarget)
+		var/wasKilled = mob_status_before != DEAD && mobtarget.stat == DEAD
+		var/damageTaken = mobtarget_health_before - mobtarget.health
+
+		if (mobfirer.missions_mission)
+			mobfirer.missions_mission.ConsiderLogging(mobfirer, mobtarget, damageTaken, damage_type, wasKilled)
+		else if (mobtarget.missions_mission)
+			mobtarget.missions_mission.ConsiderLogging(mobfirer, mobtarget, damageTaken, damage_type, wasKilled)
+	//end
 	if((result == BULLET_ACT_FORCE_PIERCE) || (mode == PROJECTILE_PIERCE_HIT))
 		if(!(movement_type & PHASING))
 			temporary_unstoppable_movement = TRUE

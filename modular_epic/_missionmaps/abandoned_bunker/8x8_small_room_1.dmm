@@ -1,0 +1,146 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"a" = (
+/turf/open/floor/iron,
+/area/planet/mission/dangerous)
+"c" = (
+/obj/machinery/light/small/directional/west,
+/obj/structure/table,
+/obj/item/paper_bin,
+/obj/item/paper,
+/obj/item/paper,
+/obj/item/paper,
+/obj/item/paper,
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"d" = (
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"e" = (
+/obj/structure/closet,
+/obj/effect/dungeongen/helper/dungeon_main_objective,
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"f" = (
+/obj/structure/closet,
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"v" = (
+/obj/structure/chair/office,
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"A" = (
+/turf/closed/wall,
+/area/planet/mission/dangerous)
+"E" = (
+/obj/effect/dungeongen/helper/dungeon_monster_spawn,
+/turf/open/floor/iron,
+/area/planet/mission/dangerous)
+"I" = (
+/obj/structure/table,
+/obj/machinery/door/window,
+/obj/item/paper,
+/obj/item/paper,
+/obj/item/paper,
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"K" = (
+/obj/machinery/light/small/directional/east,
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"L" = (
+/obj/structure/table,
+/obj/machinery/door/window,
+/obj/item/paper,
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"Q" = (
+/obj/machinery/photocopier,
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"Y" = (
+/obj/machinery/door/airlock/glass,
+/turf/open/floor/iron/white/side{
+	dir = 8
+	},
+/area/planet/mission/dangerous)
+
+(1,1,1) = {"
+a
+a
+a
+a
+a
+E
+a
+a
+"}
+(2,1,1) = {"
+a
+E
+A
+A
+A
+A
+A
+a
+"}
+(3,1,1) = {"
+a
+A
+A
+Q
+c
+v
+L
+a
+"}
+(4,1,1) = {"
+a
+A
+e
+d
+d
+v
+I
+a
+"}
+(5,1,1) = {"
+a
+A
+f
+d
+K
+d
+L
+E
+"}
+(6,1,1) = {"
+a
+A
+A
+A
+A
+Y
+A
+a
+"}
+(7,1,1) = {"
+a
+a
+a
+a
+a
+a
+a
+a
+"}
+(8,1,1) = {"
+a
+a
+a
+E
+a
+a
+a
+a
+"}

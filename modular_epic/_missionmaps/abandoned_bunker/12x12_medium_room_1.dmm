@@ -1,0 +1,335 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"a" = (
+/turf/open/floor/iron,
+/area/planet/mission/dangerous)
+"b" = (
+/obj/effect/turf_decal/tile/blue{
+	dir = 8
+	},
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"c" = (
+/obj/effect/turf_decal/tile/blue/anticorner/contrasted{
+	dir = 8
+	},
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"f" = (
+/obj/structure/table,
+/obj/structure/extinguisher_cabinet/directional/west,
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"g" = (
+/obj/machinery/smartfridge/chemistry/preloaded,
+/turf/open/floor/plating,
+/area/planet/mission/dangerous)
+"h" = (
+/obj/machinery/chem_heater/withbuffer,
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"k" = (
+/obj/machinery/chem_master,
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"m" = (
+/obj/machinery/light/directional/south,
+/obj/structure/table,
+/obj/item/paper_bin{
+	pixel_x = -3;
+	pixel_y = 7
+	},
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"n" = (
+/obj/effect/spawner/structure/window/hollow,
+/turf/open/floor/plating,
+/area/planet/mission/dangerous)
+"o" = (
+/obj/effect/turf_decal/tile/blue,
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"p" = (
+/turf/closed/wall,
+/area/planet/mission/dangerous)
+"q" = (
+/obj/effect/turf_decal/tile/blue/half/contrasted{
+	dir = 1
+	},
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"r" = (
+/obj/structure/table/glass,
+/obj/machinery/light/directional/west,
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"t" = (
+/obj/effect/dungeongen/helper/dungeon_monster_spawn,
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"u" = (
+/obj/structure/table/glass,
+/obj/effect/dungeongen/helper/dungeon_main_objective,
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"x" = (
+/obj/structure/table,
+/obj/structure/window/spawner/directional/east,
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"D" = (
+/obj/structure/table,
+/obj/machinery/door/window/left/directional/east,
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"E" = (
+/obj/effect/turf_decal/tile/blue/half/contrasted{
+	dir = 8
+	},
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"F" = (
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"H" = (
+/obj/effect/dungeongen/helper/dungeon_monster_spawn,
+/obj/effect/turf_decal/tile/blue{
+	dir = 8
+	},
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"J" = (
+/obj/effect/turf_decal/tile/blue/half/contrasted{
+	dir = 4
+	},
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"K" = (
+/obj/effect/turf_decal/tile/blue{
+	dir = 1
+	},
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"L" = (
+/obj/machinery/chem_dispenser{
+	layer = 2.7
+	},
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"O" = (
+/obj/structure/table,
+/obj/machinery/door/window/right/directional/east,
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"P" = (
+/obj/machinery/door/airlock/medical/glass{
+	name = "Pharmacy"
+	},
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"Q" = (
+/obj/effect/turf_decal/tile/blue/half/contrasted,
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"R" = (
+/obj/machinery/door/airlock/medical/glass,
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"S" = (
+/obj/effect/turf_decal/tile/blue{
+	dir = 4
+	},
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"U" = (
+/obj/structure/table/glass,
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"V" = (
+/obj/effect/dungeongen/helper/dungeon_monster_spawn,
+/turf/open/floor/iron,
+/area/planet/mission/dangerous)
+"W" = (
+/obj/structure/chair/office/light{
+	dir = 4
+	},
+/obj/effect/dungeongen/helper/dungeon_monster_spawn,
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"X" = (
+/obj/effect/dungeongen/helper/dungeon_monster_spawn,
+/obj/effect/turf_decal/tile/blue/half/contrasted,
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+"Y" = (
+/obj/effect/turf_decal/tile/blue/anticorner/contrasted,
+/turf/open/floor/iron/white,
+/area/planet/mission/dangerous)
+
+(1,1,1) = {"
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+"}
+(2,1,1) = {"
+a
+a
+a
+o
+J
+J
+J
+J
+J
+J
+S
+a
+"}
+(3,1,1) = {"
+a
+a
+o
+Y
+p
+p
+p
+p
+p
+p
+q
+a
+"}
+(4,1,1) = {"
+a
+a
+X
+p
+p
+k
+u
+r
+U
+p
+q
+V
+"}
+(5,1,1) = {"
+a
+a
+Q
+p
+L
+W
+t
+t
+F
+n
+q
+a
+"}
+(6,1,1) = {"
+a
+a
+Q
+p
+h
+F
+F
+F
+F
+g
+q
+a
+"}
+(7,1,1) = {"
+a
+a
+Q
+p
+p
+p
+g
+P
+p
+p
+q
+a
+"}
+(8,1,1) = {"
+a
+a
+H
+E
+c
+p
+t
+F
+f
+p
+q
+a
+"}
+(9,1,1) = {"
+a
+a
+a
+a
+Q
+R
+F
+W
+m
+p
+q
+a
+"}
+(10,1,1) = {"
+a
+a
+a
+a
+Q
+p
+D
+O
+x
+p
+q
+a
+"}
+(11,1,1) = {"
+a
+a
+a
+a
+b
+E
+E
+E
+E
+E
+K
+a
+"}
+(12,1,1) = {"
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+a
+"}

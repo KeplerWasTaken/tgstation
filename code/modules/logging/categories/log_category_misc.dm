@@ -68,3 +68,7 @@
 
 /datum/log_category/cave_generation
 	category = LOG_CATEGORY_CAVE_GENERATION
+
+//epicstation edit
+/datum/log_category/dungeon_generation
+	category = LOG_CATEGORY_DUNGEON_GENERATION

@@ -62,7 +62,10 @@
 			act_result = is_left_clicking ? welder_act(user, tool) : welder_act_secondary(user, tool)
 		if(TOOL_ANALYZER)
 			act_result = is_left_clicking ? analyzer_act(user, tool) : analyzer_act_secondary(user, tool)
-
+		//Epicstation EDIT
+		if(TOOL_OREDRILLER)
+			act_result = is_left_clicking ? oredriller_act(user, tool) : oredriller_act(user, tool)
+		// END
 	if(!act_result)
 		return NONE
 
@@ -168,3 +171,10 @@
 /// Called on an object when a tool with analyzer capabilities is used to right click an object
 /atom/proc/analyzer_act_secondary(mob/living/user, obj/item/tool)
 	return
+
+// epic station add oredrille act and secondary act
+/atom/proc/oredriller_act(mob/living/user, obj/item/tool)
+    return
+
+/atom/proc/oredriller_act_secondary(mob/living/user, obj/item/tool)
+    return

@@ -5,6 +5,9 @@
 	var/headlights_toggle = FALSE
 	///Determines which occupants provide access when bumping into doors
 	var/access_provider_flags = VEHICLE_CONTROL_DRIVE
+	//epicstation edit
+	var/list/occupantTraitsList = list(TRAIT_HANDS_BLOCKED)
+	//epicstation edit end
 
 /obj/vehicle/sealed/Initialize(mapload)
 	. = ..()
@@ -44,12 +47,16 @@
 
 /obj/vehicle/sealed/after_add_occupant(mob/M)
 	. = ..()
-	ADD_TRAIT(M, TRAIT_HANDS_BLOCKED, VEHICLE_TRAIT)
+	//epic station change
+	for(var/trait in occupantTraitsList)
+		ADD_TRAIT(M, trait, VEHICLE_TRAIT)
 
 
 /obj/vehicle/sealed/after_remove_occupant(mob/M)
 	. = ..()
-	REMOVE_TRAIT(M, TRAIT_HANDS_BLOCKED, VEHICLE_TRAIT)
+	//epic station change
+	for(var/trait in occupantTraitsList)
+		REMOVE_TRAIT(M, trait, VEHICLE_TRAIT)
 
 
 /obj/vehicle/sealed/proc/mob_try_enter(mob/rider)

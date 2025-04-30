@@ -21,6 +21,9 @@
 
 	COOLDOWN_START(src, party_cooldown, rand(PARTY_COOLDOWN_LENGTH_MIN, PARTY_COOLDOWN_LENGTH_MAX))
 
+	// Epicstation fix
+	if (!GLOB.bar_areas || GLOB.bar_areas.len < 0)
+		return FALSE
 	var/area/area_to_spawn_in = pick(GLOB.bar_areas)
 	var/turf/T = pick(area_to_spawn_in.contents)
 

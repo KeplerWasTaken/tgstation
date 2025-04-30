@@ -257,6 +257,9 @@
 	if(LAZYLEN(embedding))
 		updateEmbedding()
 
+	//epicstation edit, adds modular parts to the item
+	InitializeModularAttachments()
+	
 /obj/item/Destroy(force)
 	// This var exists as a weird proxy "owner" ref
 	// It's used in a few places. Stop using it, and optimially replace all uses please

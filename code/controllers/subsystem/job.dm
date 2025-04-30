@@ -29,7 +29,7 @@ SUBSYSTEM_DEF(job)
 	var/list/prioritized_jobs = list()
 	var/list/latejoin_trackers = list()
 
-	var/overflow_role = /datum/job/assistant
+	var/overflow_role = /datum/job/contractor
 
 	var/list/level_order = list(JP_HIGH,JP_MEDIUM,JP_LOW)
 
@@ -153,6 +153,8 @@ SUBSYSTEM_DEF(job)
 
 	for(var/job_type in all_jobs)
 		var/datum/job/job = new job_type()
+		if(job.disabled)
+			continue
 		if(!job.config_check())
 			continue
 		if(!job.map_check()) //Even though we initialize before mapping, this is fine because the config is loaded at new

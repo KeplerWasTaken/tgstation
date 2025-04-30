@@ -327,6 +327,7 @@
 	user.set_pull_offsets(src, grab_state)
 	return TRUE
 
+// SRC is attacked by user
 /mob/living/attack_animal(mob/living/simple_animal/user, list/modifiers)
 	. = ..()
 	if(.)
@@ -371,6 +372,8 @@
 
 	to_chat(user, span_danger("You [user.attack_verb_simple] [src]!"))
 	log_combat(user, src, "attacked")
+
+	var/healthBefore = health
 	var/damage_done = apply_damage(
 		damage = damage,
 		damagetype = user.melee_damage_type,
@@ -381,6 +384,16 @@
 		sharpness = user.sharpness,
 		attack_direction = get_dir(user, src),
 	)
+	var/healthAfter = health
+	var/damageTaken = healthBefore - healthAfter
+	to_chat(user, "Damage: [damageTaken] by: [user.real_name] to [src.real_name]")
+	//epicstation if user takes damage as is in mission, log it
+	if (ckey)
+		var/datum/mission/missionUserIsIn = GetMissionUserIsIn(ckey)
+		if (missionUserIsIn && missionUserIsIn.started == TRUE)
+			if (damageTaken > 0)
+				missionUserIsIn.TallyDamageTaken(src.name, user.melee_damage_type, healthBefore - healthAfter)
+	//epicstation end
 	return damage_done
 
 /mob/living/attack_hand(mob/living/carbon/human/user, list/modifiers)

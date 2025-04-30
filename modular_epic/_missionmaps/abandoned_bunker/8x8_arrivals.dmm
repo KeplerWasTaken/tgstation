@@ -1,0 +1,120 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"a" = (
+/turf/closed/wall/r_wall,
+/area/planet/mission/safe)
+"h" = (
+/obj/missionmarker/mission,
+/turf/open/floor/iron/white,
+/area/planet/mission/safe)
+"j" = (
+/obj/effect/spawner/random/structure/chair_comfy,
+/turf/open/floor/iron/white,
+/area/planet/mission/safe)
+"k" = (
+/obj/effect/dungeongen/helper/dungeon_monster_spawn,
+/turf/open/floor/iron,
+/area/planet/mission/dangerous)
+"s" = (
+/turf/open/floor/iron,
+/area/planet/mission/dangerous)
+"u" = (
+/obj/effect/spawner/random/structure/chair_flipped,
+/turf/open/floor/iron/white,
+/area/planet/mission/safe)
+"v" = (
+/obj/machinery/door/airlock/grunge,
+/obj/structure/barricade/wooden/crude,
+/turf/open/floor/iron/white,
+/area/planet/mission/safe)
+"D" = (
+/turf/open/floor/iron/white,
+/area/planet/mission/safe)
+"V" = (
+/obj/structure/barricade/sandbags,
+/turf/open/floor/iron/white,
+/area/planet/mission/safe)
+"Z" = (
+/obj/structure/ladder,
+/turf/open/floor/iron/white,
+/area/planet/mission/safe)
+
+(1,1,1) = {"
+s
+s
+s
+s
+s
+s
+s
+s
+"}
+(2,1,1) = {"
+s
+a
+a
+a
+a
+a
+a
+s
+"}
+(3,1,1) = {"
+s
+a
+Z
+D
+D
+D
+a
+s
+"}
+(4,1,1) = {"
+s
+a
+u
+h
+D
+D
+a
+s
+"}
+(5,1,1) = {"
+s
+a
+u
+D
+D
+D
+a
+k
+"}
+(6,1,1) = {"
+s
+a
+j
+D
+V
+V
+a
+s
+"}
+(7,1,1) = {"
+s
+a
+a
+a
+a
+v
+a
+s
+"}
+(8,1,1) = {"
+s
+s
+s
+s
+s
+s
+s
+s
+"}
