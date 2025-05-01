@@ -4,14 +4,13 @@
  * @license MIT
  */
 
-import { classes } from 'common/react';
+import { useEffect, useRef } from 'react';
+import { Box } from 'tgui-core/components';
+import { addScrollableNode, removeScrollableNode } from 'tgui-core/events';
+import { classes } from 'tgui-core/react';
+import { computeBoxClassName, computeBoxProps } from 'tgui-core/ui';
 
-import {
-  BoxProps,
-  computeBoxClassName,
-  computeBoxProps,
-} from '../components/Box';
-import { addScrollableNode, removeScrollableNode } from '../events';
+type BoxProps = React.ComponentProps<typeof Box>;
 
 type Props = Partial<{
   theme: string;
@@ -20,6 +19,7 @@ type Props = Partial<{
 
 export function Layout(props: Props) {
   const { className, theme = 'nanotrasen', children, ...rest } = props;
+  document.documentElement.className = `theme-${theme}`;
 
   return (
     <div className={'theme-' + theme}>
@@ -40,6 +40,20 @@ type ContentProps = Partial<{
 
 function LayoutContent(props: ContentProps) {
   const { className, scrollable, children, ...rest } = props;
+  const node = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const self = node.current;
+
+    if (self && scrollable) {
+      addScrollableNode(self);
+    }
+    return () => {
+      if (self && scrollable) {
+        removeScrollableNode(self);
+      }
+    };
+  }, []);
 
   return (
     <div
@@ -49,16 +63,12 @@ function LayoutContent(props: ContentProps) {
         className,
         computeBoxClassName(rest),
       ])}
+      ref={node}
       {...computeBoxProps(rest)}
     >
       {children}
     </div>
   );
 }
-
-LayoutContent.defaultHooks = {
-  onComponentDidMount: (node) => addScrollableNode(node),
-  onComponentWillUnmount: (node) => removeScrollableNode(node),
-};
 
 Layout.Content = LayoutContent;

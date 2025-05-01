@@ -7,7 +7,6 @@ GLOBAL_LIST_EMPTY(explosions)
 
 SUBSYSTEM_DEF(explosions)
 	name = "Explosions"
-	init_order = INIT_ORDER_EXPLOSIONS
 	priority = FIRE_PRIORITY_EXPLOSIONS
 	wait = 1
 	flags = SS_TICKER|SS_NO_INIT
@@ -87,12 +86,9 @@ SUBSYSTEM_DEF(explosions)
 	throwturf -= T
 	held_throwturf -= T
 
-/client/proc/check_bomb_impacts()
-	set name = "Check Bomb Impact"
-	set category = "Debug"
-
-	var/newmode = tgui_alert(usr, "Use reactionary explosions?","Check Bomb Impact", list("Yes", "No"))
-	var/turf/epicenter = get_turf(mob)
+ADMIN_VERB(check_bomb_impacts, R_DEBUG, "Check Bomb Impact", "See what the effect of a bomb would be.", ADMIN_CATEGORY_DEBUG)
+	var/newmode = tgui_alert(user, "Use reactionary explosions?","Check Bomb Impact", list("Yes", "No"))
+	var/turf/epicenter = get_turf(user.mob)
 	if(!epicenter)
 		return
 
@@ -100,7 +96,7 @@ SUBSYSTEM_DEF(explosions)
 	var/heavy = 0
 	var/light = 0
 	var/list/choices = list("Small Bomb","Medium Bomb","Big Bomb","Custom Bomb")
-	var/choice = tgui_input_list(usr, "Pick the bomb size", "Bomb Size?", choices)
+	var/choice = tgui_input_list(user, "Pick the bomb size", "Bomb Size?", choices)
 	switch(choice)
 		if(null)
 			return 0
@@ -117,9 +113,9 @@ SUBSYSTEM_DEF(explosions)
 			heavy = 5
 			light = 7
 		if("Custom Bomb")
-			dev = input("Devastation range (Tiles):") as num
-			heavy = input("Heavy impact range (Tiles):") as num
-			light = input("Light impact range (Tiles):") as num
+			dev = input(user, "Devastation range (Tiles):") as num
+			heavy = input(user, "Heavy impact range (Tiles):") as num
+			light = input(user, "Light impact range (Tiles):") as num
 
 	var/max_range = max(dev, heavy, light)
 	var/x0 = epicenter.x
@@ -355,7 +351,7 @@ SUBSYSTEM_DEF(explosions)
 			who_did_it = "\[Projectile firer: [ADMIN_LOOKUPFLW(fired_projectile.firer)]\]"
 			who_did_it_game_log = "\[Projectile firer: [key_name(fired_projectile.firer)]\]"
 		else
-			who_did_it = "\[Projectile firer: [ADMIN_LOOKUPFLW(fired_projectile.firer.fingerprintslast)]\]"
+			who_did_it = "\[Projectile firer: [ADMIN_LOOKUPFLW(fired_projectile.firer?.fingerprintslast)]\]"
 			who_did_it_game_log = "\[Projectile firer: [key_name(fired_projectile.firer.fingerprintslast)]\]"
 	// Otherwise if the explosion cause is an atom, try get the fingerprints.
 	else if(istype(explosion_cause))
@@ -524,9 +520,10 @@ SUBSYSTEM_DEF(explosions)
  * - [creaking_sound][/sound]: The sound that plays when the station creaks during the explosion.
  * - [hull_creaking_sound][/sound]: The sound that plays when the station creaks after the explosion.
  */
-/datum/controller/subsystem/explosions/proc/shake_the_room(turf/epicenter, near_distance, far_distance, quake_factor, echo_factor, creaking, sound/near_sound = sound(get_sfx(SFX_EXPLOSION)), sound/far_sound = sound('sound/effects/explosionfar.ogg'), sound/echo_sound = sound('sound/effects/explosion_distant.ogg'), sound/creaking_sound = sound(get_sfx(SFX_EXPLOSION_CREAKING)), hull_creaking_sound = sound(get_sfx(SFX_HULL_CREAKING)))
+/datum/controller/subsystem/explosions/proc/shake_the_room(turf/epicenter, near_distance, far_distance, quake_factor, echo_factor, creaking, sound/near_sound = sound(get_sfx(SFX_EXPLOSION)), sound/far_sound = sound('sound/effects/explosion/explosionfar.ogg'), sound/echo_sound = sound('sound/effects/explosion/explosion_distant.ogg'), sound/creaking_sound = sound(get_sfx(SFX_EXPLOSION_CREAKING)), hull_creaking_sound = sound(get_sfx(SFX_HULL_CREAKING)))
 	var/frequency = get_rand_frequency()
 	var/blast_z = epicenter.z
+	var/area/epicenter_area = get_area(epicenter)
 	if(isnull(creaking)) // Autoset creaking.
 		var/on_station = SSmapping.level_trait(epicenter.z, ZTRAIT_STATION)
 		if(on_station && prob((quake_factor * QUAKE_CREAK_PROB) + (echo_factor * ECHO_CREAK_PROB))) // Huge explosions are near guaranteed to make the station creak and whine, smaller ones might.
@@ -562,7 +559,7 @@ SUBSYSTEM_DEF(explosions)
 				base_shake_amount = max(base_shake_amount, quake_factor * 3, 0) // Devastating explosions rock the station and ground
 				shake_camera(listener, FAR_SHAKE_DURATION, min(base_shake_amount, FAR_SHAKE_CAP))
 
-		else if(!isspaceturf(listener_turf) && echo_factor) // Big enough explosions echo through the hull.
+		else if(!isspaceturf(listener_turf) && !(!(epicenter_area.type in GLOB.the_station_areas) && SSmapping.is_planetary()) && echo_factor) // Big enough explosions echo through the hull. Except on planetary maps if the epicenter is not on the station's area.
 			var/echo_volume
 			if(quake_factor)
 				echo_volume = 60
@@ -637,23 +634,27 @@ SUBSYSTEM_DEF(explosions)
 		// top left to one before top right
 		if(highest_y <= max_y)
 			candidates += block(
-				locate(max(lowest_x, 1), highest_y, our_z),
-				locate(min(highest_x - 1, max_x), highest_y, our_z))
+				lowest_x, highest_y, our_z,
+				highest_x - 1, highest_y, our_z
+			)
 		// top right to one before bottom right
 		if(highest_x <= max_x)
 			candidates += block(
-				locate(highest_x, min(highest_y, max_y), our_z),
-				locate(highest_x, max(lowest_y + 1, 1), our_z))
+				highest_x, highest_y, our_z,
+				highest_x, lowest_y + 1, our_z
+			)
 		// bottom right to one before bottom left
 		if(lowest_y >= 1)
 			candidates += block(
-				locate(min(highest_x, max_x), lowest_y, our_z),
-				locate(max(lowest_x + 1, 1), lowest_y, our_z))
+				highest_x, lowest_y, our_z,
+				lowest_x + 1, lowest_y, our_z
+			)
 		// bottom left to one before top left
 		if(lowest_x >= 1)
 			candidates += block(
-				locate(lowest_x, max(lowest_y, 1), our_z),
-				locate(lowest_x, min(highest_y - 1, max_y), our_z))
+				lowest_x, lowest_y, our_z,
+				lowest_x, highest_y - 1, our_z
+			)
 
 	if(!do_directional)
 		outlist += candidates

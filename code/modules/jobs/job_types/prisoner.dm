@@ -59,22 +59,23 @@
 	belt = null
 	ears = null
 	shoes = /obj/item/clothing/shoes/sneakers/orange
+	box = /obj/item/storage/box/survival/prisoner
 
 /datum/outfit/job/prisoner/pre_equip(mob/living/carbon/human/H)
 	..()
 	if(prob(1)) // D BOYYYYSSSSS
 		head = /obj/item/clothing/head/beanie/black/dboy
 
-/datum/outfit/job/prisoner/post_equip(mob/living/carbon/human/new_prisoner, visualsOnly)
+/datum/outfit/job/prisoner/post_equip(mob/living/carbon/human/new_prisoner, visuals_only)
 	. = ..()
 
 	var/crime_name = new_prisoner.client?.prefs?.read_preference(/datum/preference/choiced/prisoner_crime)
-	if(!crime_name)
-		return
 	var/datum/prisoner_crime/crime = GLOB.prisoner_crimes[crime_name]
+	if (isnull(crime))
+		return
 	var/list/limbs_to_tat = new_prisoner.bodyparts.Copy()
 	for(var/i in 1 to crime.tattoos)
-		if(!length(SSpersistence.prison_tattoos_to_use) || visualsOnly)
+		if(!length(SSpersistence.prison_tattoos_to_use) || visuals_only)
 			return
 		var/obj/item/bodypart/tatted_limb = pick_n_take(limbs_to_tat)
 		var/list/tattoo = pick_n_take(SSpersistence.prison_tattoos_to_use)

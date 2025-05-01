@@ -1,7 +1,4 @@
 import { map, sortBy } from 'common/collections';
-import { flow } from 'common/fp';
-
-import { useBackend } from '../backend';
 import {
   Box,
   Button,
@@ -11,9 +8,11 @@ import {
   Section,
   Stack,
   Table,
-} from '../components';
+} from 'tgui-core/components';
+
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
-import { PageSelect } from './LibraryConsole';
+import { PageSelect } from './LibraryConsole/components/PageSelect';
 
 export const LibraryVisitor = (props) => {
   return (
@@ -71,14 +70,14 @@ const SearchAndDisplay = (props) => {
     author,
     params_changed,
   } = data;
-  const records = flow([
-    map((record, i) => ({
+  const records = sortBy(
+    map(data.pages, (record, i) => ({
       ...record,
       // Generate a unique id
       key: i,
     })),
-    sortBy((record) => record.key),
-  ])(data.pages);
+    (record) => record.key,
+  );
   return (
     <Section>
       <Stack justify="space-between">
@@ -86,11 +85,12 @@ const SearchAndDisplay = (props) => {
           <Stack>
             <Stack.Item>
               <Input
+                expensive
                 value={book_id}
                 placeholder={book_id === null ? 'ID' : book_id}
                 mt={0.5}
                 width="70px"
-                onChange={(e, value) =>
+                onChange={(value) =>
                   act('set_search_id', {
                     id: value,
                   })
@@ -113,7 +113,8 @@ const SearchAndDisplay = (props) => {
                 value={title}
                 placeholder={title || 'Title'}
                 mt={0.5}
-                onChange={(e, value) =>
+                expensive
+                onChange={(value) =>
                   act('set_search_title', {
                     title: value,
                   })
@@ -125,7 +126,8 @@ const SearchAndDisplay = (props) => {
                 value={author}
                 placeholder={author || 'Author'}
                 mt={0.5}
-                onChange={(e, value) =>
+                expensive
+                onChange={(value) =>
                   act('set_search_author', {
                     author: value,
                   })

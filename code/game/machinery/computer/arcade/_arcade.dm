@@ -7,16 +7,13 @@
 	icon_screen = "invaders"
 	light_color = LIGHT_COLOR_GREEN
 	interaction_flags_machine = INTERACT_MACHINE_ALLOW_SILICON|INTERACT_MACHINE_REQUIRES_LITERACY
+	projectiles_pass_chance = 0 // I guess gambling can save your life huh?
 
 	///If set, will dispense these as prizes instead of the default GLOB.arcade_prize_pool
 	///Like prize pool, it must be a list of the prize and the weight of being selected.
 	var/list/prize_override
 
-/obj/machinery/computer/arcade/item_interaction(mob/living/user, obj/item/tool, list/modifiers, is_right_clicking)
-	. = ..()
-	if(. & ITEM_INTERACT_ANY_BLOCKER)
-		return .
-
+/obj/machinery/computer/arcade/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(istype(tool, /obj/item/stack/arcadeticket))
 		var/obj/item/stack/arcadeticket/tickets = tool
 		if(!tickets.use(2))
@@ -43,6 +40,8 @@
 		balloon_alert(user, "cabinet reset")
 		reset_cabinet(user)
 		return ITEM_INTERACT_SUCCESS
+
+	return NONE
 
 /obj/machinery/computer/arcade/screwdriver_act(mob/living/user, obj/item/I)
 	//you can't stop playing when you start.
@@ -80,14 +79,14 @@
 /obj/machinery/computer/arcade/proc/prizevend(mob/living/user, prizes = 1)
 	SEND_SIGNAL(src, COMSIG_ARCADE_PRIZEVEND, user, prizes)
 	if(user.mind?.get_skill_level(/datum/skill/gaming) >= SKILL_LEVEL_LEGENDARY && HAS_TRAIT(user, TRAIT_GAMERGOD))
-		visible_message("<span class='notice'>[user] inputs an intense cheat code!",\
+		visible_message(span_notice("[user] inputs an intense cheat code!"),\
 		span_notice("You hear a flurry of buttons being pressed."))
 		say("CODE ACTIVATED: EXTRA PRIZES.")
 		prizes *= 2
 	for(var/i in 1 to prizes)
 		user.add_mood_event("arcade", /datum/mood_event/arcade)
 		if(prob(0.0001)) //1 in a million
-			new /obj/item/gun/energy/pulse/prize(src)
+			new /obj/item/gun/energy/pulse/prize(get_turf(src))
 			visible_message(span_notice("[src] dispenses.. woah, a gun! Way past cool."), span_notice("You hear a chime and a shot."))
 			user.client.give_award(/datum/award/achievement/misc/pulse, user)
 			continue
@@ -100,5 +99,3 @@
 		var/atom/movable/the_prize = new prizeselect(get_turf(src))
 		playsound(src, 'sound/machines/machine_vend.ogg', 50, TRUE, extrarange = -3)
 		visible_message(span_notice("[src] dispenses [the_prize]!"), span_notice("You hear a chime and a clunk."))
-
-

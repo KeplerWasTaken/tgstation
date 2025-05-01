@@ -12,6 +12,8 @@
 	var/datum/ai_laws/laws
 	var/obj/item/circuitboard/aicore/circuit
 	var/obj/item/mmi/core_mmi
+	/// only used in cases of AIs piloting mechs or shunted malf AIs, possible later use cases
+	var/mob/living/silicon/ai/remote_ai = null
 
 /obj/structure/ai_core/Initialize(mapload)
 	. = ..()
@@ -58,19 +60,30 @@
 		update_appearance()
 
 /obj/structure/ai_core/Destroy()
+	if(istype(remote_ai))
+		remote_ai = null
 	QDEL_NULL(circuit)
 	QDEL_NULL(core_mmi)
 	QDEL_NULL(laws)
 	return ..()
 
+/obj/structure/ai_core/take_damage(damage_amount, damage_type, damage_flag, sound_effect, attack_dir, armour_penetration)
+	. = ..()
+	if(. > 0 && istype(remote_ai))
+		to_chat(remote_ai, span_danger("Your core is under attack!"))
+
+
 /obj/structure/ai_core/deactivated
 	icon_state = "ai-empty"
 	anchored = TRUE
 	state = AI_READY_CORE
+	var/mob/living/silicon/ai/attached_ai
 
-/obj/structure/ai_core/deactivated/Initialize(mapload, skip_mmi_creation = FALSE, posibrain = FALSE)
+/obj/structure/ai_core/deactivated/Initialize(mapload, skip_mmi_creation = FALSE, posibrain = FALSE, linked_ai)
 	. = ..()
 	circuit = new(src)
+	if(linked_ai)
+		attached_ai = linked_ai
 	if(skip_mmi_creation)
 		return
 	if(posibrain)
@@ -79,6 +92,16 @@
 		core_mmi = new(src)
 		core_mmi.brain = new(core_mmi)
 		core_mmi.update_appearance()
+
+/obj/structure/ai_core/deactivated/Destroy()
+	if(attached_ai)
+		attached_ai.linked_core = null
+		attached_ai = null
+	. = ..()
+
+/obj/structure/ai_core/deactivated/proc/disable_doomsday(datum/source)
+	SIGNAL_HANDLER
+	attached_ai.ShutOffDoomsdayDevice()
 
 /obj/structure/ai_core/latejoin_inactive
 	name = "networked AI core"
@@ -126,7 +149,7 @@
 		return FALSE
 	return TRUE
 
-/obj/structure/ai_core/latejoin_inactive/attackby(obj/item/tool, mob/user, params)
+/obj/structure/ai_core/latejoin_inactive/attackby(obj/item/tool, mob/user, list/modifiers)
 	if(tool.tool_behaviour == TOOL_MULTITOOL)
 		active = !active
 		to_chat(user, span_notice("You [active? "activate" : "deactivate"] \the [src]'s transmitters."))
@@ -156,7 +179,9 @@
 			balloon_alert(user, "connected neural network")
 			return ITEM_INTERACT_SUCCESS
 
-/obj/structure/ai_core/attackby(obj/item/tool, mob/living/user, params)
+/obj/structure/ai_core/attackby(obj/item/tool, mob/living/user, list/modifiers)
+	if(remote_ai)
+		to_chat(remote_ai, span_danger("CORE TAMPERING DETECTED!"))
 	if(!anchored)
 		if(tool.tool_behaviour == TOOL_WELDER)
 			if(state != EMPTY_CORE)
@@ -295,8 +320,17 @@
 				if(tool.tool_behaviour == TOOL_CROWBAR && core_mmi)
 					tool.play_tool_sound(src)
 					balloon_alert(user, "removed [AI_CORE_BRAIN(core_mmi)]")
-					core_mmi.forceMove(loc)
-					return
+					if(remote_ai)
+						var/mob/living/silicon/ai/remoted_ai = remote_ai
+						remoted_ai.break_core_link()
+						if(!IS_MALF_AI(remoted_ai))
+							//don't pull back shunted malf AIs
+							remoted_ai.death(gibbed = TRUE, drop_mmi = FALSE)
+							///the drop_mmi param determines whether the MMI is dropped at their current location
+							///which in this case would be somewhere else, so we drop their MMI at the core instead
+							remoted_ai.make_mmi_drop_and_transfer(core_mmi, src)
+					core_mmi.forceMove(loc) //if they're malf, just drops a blank MMI, or if it's an incomplete shell
+					return					//it drops the mmi that was put in before it was finished
 
 			if(GLASS_CORE)
 				if(tool.tool_behaviour == TOOL_CROWBAR)

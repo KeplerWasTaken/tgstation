@@ -32,10 +32,8 @@ GLOBAL_REAL(logger, /datum/log_holder)
 
 GENERAL_PROTECT_DATUM(/datum/log_holder)
 
-/client/proc/log_viewer_new()
-	set name = "View Round Logs"
-	set category = "Admin"
-	logger.ui_interact(mob)
+ADMIN_VERB(log_viewer_new, R_ADMIN|R_DEBUG, "View Round Logs", "View the rounds logs.", ADMIN_CATEGORY_MAIN)
+	logger.ui_interact(user.mob)
 
 /datum/log_holder/ui_interact(mob/user, datum/tgui/ui)
 	if(!check_rights_for(user.client, R_ADMIN))
@@ -48,7 +46,7 @@ GENERAL_PROTECT_DATUM(/datum/log_holder)
 		ui.open()
 
 /datum/log_holder/ui_state(mob/user)
-	return GLOB.admin_state
+	return ADMIN_STATE(R_ADMIN | R_DEBUG)
 
 /datum/log_holder/ui_static_data(mob/user)
 	var/list/data = list(
@@ -278,7 +276,7 @@ GENERAL_PROTECT_DATUM(/datum/log_holder)
 	init_category_file(category_instance, category_header)
 
 /datum/log_holder/proc/human_readable_timestamp(precision = 3)
-	var/start = time2text(world.timeofday, "YYYY-MM-DD hh:mm:ss")
+	var/start = time2text(world.timeofday, "YYYY-MM-DD hh:mm:ss", TIMEZONE_UTC)
 	// now we grab the millis from the rustg timestamp
 	var/rustg_stamp = rustg_unix_timestamp()
 	var/list/timestamp = splittext(rustg_stamp, ".")

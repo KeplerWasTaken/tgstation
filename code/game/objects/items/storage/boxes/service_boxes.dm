@@ -47,7 +47,7 @@
 
 /obj/item/storage/box/mousetraps
 	name = "box of Pest-B-Gon mousetraps"
-	desc = "<span class='alert'>Keep out of reach of children.</span>"
+	desc = span_alert("Keep out of reach of children.")
 	illustration = "mousetrap"
 
 /obj/item/storage/box/mousetraps/PopulateContents()
@@ -60,11 +60,7 @@
 	icon = 'icons/obj/toys/toy.dmi'
 	icon_state = "spbox"
 	illustration = ""
-
-/obj/item/storage/box/snappops/Initialize(mapload)
-	. = ..()
-	atom_storage.set_holdable(/obj/item/toy/snappop)
-	atom_storage.max_slots = 8
+	storage_type = /datum/storage/box/snappops
 
 /obj/item/storage/box/snappops/PopulateContents()
 	for(var/i in 1 to 8)
@@ -86,19 +82,15 @@
 	custom_price = PAYCHECK_CREW * 0.4
 	base_icon_state = "matchbox"
 	illustration = null
+	storage_type = /datum/storage/box/match
 
 /obj/item/storage/box/matches/Initialize(mapload)
 	. = ..()
-	atom_storage.max_slots = 10
-	atom_storage.set_holdable(/obj/item/match)
+	AddElement(/datum/element/ignites_matches)
 
 /obj/item/storage/box/matches/PopulateContents()
 	for(var/i in 1 to 10)
 		new /obj/item/match(src)
-
-/obj/item/storage/box/matches/attackby(obj/item/match/W as obj, mob/user as mob, params)
-	if(istype(W, /obj/item/match))
-		W.matchignite()
 
 /obj/item/storage/box/matches/update_icon_state()
 	. = ..()
@@ -120,13 +112,7 @@
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
 	foldable_result = /obj/item/stack/sheet/cardboard //BubbleWrap
 	illustration = "light"
-
-/obj/item/storage/box/lights/Initialize(mapload)
-	. = ..()
-	atom_storage.max_slots = 21
-	atom_storage.set_holdable(list(/obj/item/light/tube, /obj/item/light/bulb))
-	atom_storage.max_total_storage = 21
-	atom_storage.allow_quick_gather = FALSE //temp workaround to re-enable filling the light replacer with the box
+	storage_type = /datum/storage/box/lights
 
 /obj/item/storage/box/lights/bulbs/PopulateContents()
 	for(var/i in 1 to 21)
@@ -204,15 +190,45 @@
 	for(var/i in 1 to 5)
 		new /obj/item/reagent_containers/spray/chemsprayer/party(src)
 
+/obj/item/storage/box/balloons
+	name = "box of long balloons"
+	desc = "A completely randomized and wacky box of long balloons, harvested straight from balloon farms on the clown planet."
+	illustration = "balloon"
+	storage_type = /datum/storage/box/balloon
+
+/obj/item/storage/box/balloons/PopulateContents()
+	for(var/i in 1 to 24)
+		new /obj/item/toy/balloon/long(src)
+
 /obj/item/storage/box/stickers
-	name = "box of stickers"
-	desc = "A box full of random stickers. Do give to the clown."
+	name = "sticker pack"
+	desc = "A pack of removable stickers. Removable? What a rip off!<br>On the back, <b>DO NOT GIVE TO THE CLOWN!</b> is printed in large lettering."
+	icon = 'icons/obj/toys/stickers.dmi'
+	icon_state = "stickerpack"
+	illustration = null
+	w_class = WEIGHT_CLASS_TINY
+	storage_type = /datum/storage/box/stickers
+
+	var/static/list/pack_labels = list(
+		"smile",
+		"frown",
+		"heart",
+		"silentman",
+		"tider",
+		"star",
+	)
+
+/obj/item/storage/box/stickers/Initialize(mapload)
+	. = ..()
+	if(isnull(illustration))
+		illustration = pick(pack_labels)
+		update_appearance()
 
 /obj/item/storage/box/stickers/proc/generate_non_contraband_stickers_list()
 	var/list/allowed_stickers = list()
 
 	for(var/obj/item/sticker/sticker_type as anything in subtypesof(/obj/item/sticker))
-		if(!sticker_type::contraband)
+		if(!sticker_type::exclude_from_random)
 			allowed_stickers += sticker_type
 
 	return allowed_stickers
@@ -228,8 +244,9 @@
 		new type(src)
 
 /obj/item/storage/box/stickers/googly
-	name = "box of googly eye stickers"
+	name = "googly eye sticker pack"
 	desc = "Turn anything and everything into something vaguely alive!"
+	illustration = "googly-alt"
 
 /obj/item/storage/box/stickers/googly/PopulateContents()
 	for(var/i in 1 to 6)

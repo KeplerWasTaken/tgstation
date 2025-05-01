@@ -3,6 +3,7 @@
 
 	name = "air scrubber"
 	desc = "Has a valve and pump attached to it."
+	construction_type = /obj/item/pipe/directional/scrubber
 	use_power = IDLE_POWER_USE
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.1
 	active_power_usage = BASE_MACHINE_ACTIVE_CONSUMPTION * 0.15
@@ -15,6 +16,7 @@
 	has_cap_visuals = TRUE
 	vent_movement = VENTCRAWL_ALLOWED | VENTCRAWL_CAN_SEE | VENTCRAWL_ENTRANCE_ALLOWED
 	processing_flags = NONE
+	interaction_flags_click = NEED_VENTCRAWL
 
 	///The mode of the scrubber (ATMOS_DIRECTION_SCRUBBING or ATMOS_DIRECTION_SIPHONING)
 	var/scrubbing = ATMOS_DIRECTION_SCRUBBING
@@ -320,7 +322,7 @@
 	update_appearance()
 	pipe_vision_img = image(src, loc, dir = dir)
 	SET_PLANE_EXPLICIT(pipe_vision_img, ABOVE_HUD_PLANE, src)
-	playsound(loc, 'sound/weapons/bladeslice.ogg', 100, TRUE)
+	playsound(loc, 'sound/items/weapons/bladeslice.ogg', 100, TRUE)
 
 
 /obj/machinery/atmospherics/components/unary/vent_scrubber/layer2

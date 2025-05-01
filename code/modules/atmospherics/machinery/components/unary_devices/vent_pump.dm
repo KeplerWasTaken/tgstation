@@ -5,7 +5,7 @@
 
 	name = "air vent"
 	desc = "Has a valve and pump attached to it."
-
+	construction_type = /obj/item/pipe/directional/vent
 	use_power = IDLE_POWER_USE
 	idle_power_usage = BASE_MACHINE_IDLE_CONSUMPTION * 0.15
 	can_unwrench = TRUE
@@ -18,6 +18,7 @@
 	vent_movement = VENTCRAWL_ALLOWED | VENTCRAWL_CAN_SEE | VENTCRAWL_ENTRANCE_ALLOWED
 	// vents are more complex machinery and so are less resistant to damage
 	max_integrity = 100
+	interaction_flags_click = NEED_VENTCRAWL
 
 	///Direction of pumping the gas (ATMOS_DIRECTION_RELEASING or ATMOS_DIRECTION_SIPHONING)
 	var/pump_direction = ATMOS_DIRECTION_RELEASING
@@ -229,7 +230,7 @@
 	fan_overclocked = !fan_overclocked
 
 	if(from_break)
-		playsound(src, 'sound/machines/fan_break.ogg', 100)
+		playsound(src, 'sound/machines/fan/fan_break.ogg', 100)
 		fan_overclocked = FALSE
 
 	if(fan_overclocked)
@@ -359,7 +360,7 @@
 	update_appearance()
 	pipe_vision_img = image(src, loc, dir = dir)
 	SET_PLANE_EXPLICIT(pipe_vision_img, ABOVE_HUD_PLANE, src)
-	playsound(loc, 'sound/weapons/bladeslice.ogg', 100, TRUE)
+	playsound(loc, 'sound/items/weapons/bladeslice.ogg', 100, TRUE)
 
 /obj/machinery/atmospherics/components/unary/vent_pump/high_volume
 	name = "large air vent"

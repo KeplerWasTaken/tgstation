@@ -26,7 +26,7 @@
 
 	return
 
-/obj/structure/barricade/attackby(obj/item/I, mob/living/user, params)
+/obj/structure/barricade/attackby(obj/item/I, mob/living/user, list/modifiers)
 	if(I.tool_behaviour == TOOL_WELDER && !user.combat_mode && bar_material == METAL)
 		if(atom_integrity < max_integrity)
 			if(!I.tool_start_check(user, amount=1))
@@ -90,7 +90,7 @@
 	balloon_alert(user, "deconstructing barricade...")
 	if(!tool.use_tool(src, user, 2 SECONDS, volume=50))
 		return
-	balloon_alert(user, "barricade deconstructed")
+	loc.balloon_alert(user, "barricade deconstructed")
 	tool.play_tool_sound(src)
 	new /obj/item/stack/sheet/mineral/wood(get_turf(src), drop_amount)
 	qdel(src)
@@ -99,7 +99,7 @@
 /obj/structure/barricade/wooden/crude
 	name = "crude plank barricade"
 	desc = "This space is blocked off by a crude assortment of planks."
-	icon_state = "woodenbarricade-old"
+	icon_state = "plankbarricade"
 	drop_amount = 1
 	max_integrity = 50
 	proj_pass_rate = 65
@@ -107,7 +107,7 @@
 
 /obj/structure/barricade/wooden/crude/snow
 	desc = "This space is blocked off by a crude assortment of planks. It seems to be covered in a layer of snow."
-	icon_state = "woodenbarricade-snow-old"
+	icon_state = "plankbarricade_snow"
 	max_integrity = 75
 
 /obj/structure/barricade/wooden/make_debris()
@@ -180,10 +180,9 @@
 	. = ..()
 	. += span_notice("Alt-click to toggle modes.")
 
-/obj/item/grenade/barrier/AltClick(mob/living/carbon/user)
-	if(!istype(user) || !user.can_perform_action(src))
-		return
+/obj/item/grenade/barrier/click_alt(mob/living/carbon/user)
 	toggle_mode(user)
+	return CLICK_ACTION_SUCCESS
 
 /obj/item/grenade/barrier/proc/toggle_mode(mob/user)
 	switch(mode)

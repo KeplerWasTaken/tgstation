@@ -98,17 +98,16 @@
 	else
 		to_chat(user, span_warning("The safety hatch has been disabled!"))
 
-/obj/machinery/fat_sucker/AltClick(mob/living/user)
-	if(!user.can_perform_action(src))
-		return
+/obj/machinery/fat_sucker/click_alt(mob/living/user)
 	if(user == occupant)
 		to_chat(user, span_warning("You can't reach the controls from inside!"))
-		return
+		return CLICK_ACTION_BLOCKING
 	if(!(obj_flags & EMAGGED) && !allowed(user))
 		to_chat(user, span_warning("You lack the required access."))
-		return
+		return CLICK_ACTION_BLOCKING
 	free_exit = !free_exit
 	to_chat(user, span_notice("Safety hatch [free_exit ? "unlocked" : "locked"]."))
+	return CLICK_ACTION_SUCCESS
 
 /obj/machinery/fat_sucker/update_overlays()
 	. = ..()
@@ -167,7 +166,7 @@
 			set_light(2, 1, "#ff0000")
 		else
 			say("Subject not fat enough.")
-			playsound(src, 'sound/machines/buzz-sigh.ogg', 40, FALSE)
+			playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 40, FALSE)
 			overlays += "[icon_state]_red" //throw a red light icon over it, to show that it won't work
 
 /obj/machinery/fat_sucker/proc/stop()

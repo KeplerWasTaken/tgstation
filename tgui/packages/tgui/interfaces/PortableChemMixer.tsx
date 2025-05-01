@@ -1,7 +1,7 @@
 import { sortBy } from 'common/collections';
+import { Box, Button, Section } from 'tgui-core/components';
 
 import { useBackend } from '../backend';
-import { Box, Button, Section } from '../components';
 import { Window } from '../layouts';
 import { Beaker, BeakerDisplay } from './common/BeakerDisplay';
 
@@ -26,8 +26,9 @@ export const PortableChemMixer = (props) => {
   const { act, data } = useBackend<Data>();
   const { beaker } = data;
   const beakerTransferAmounts = beaker ? beaker.transferAmounts : [];
-  const chemicals = sortBy((chem: DispensableReagent) => chem.id)(
+  const chemicals = sortBy(
     data.chemicals,
+    (chem: DispensableReagent) => chem.id,
   );
   return (
     <Window width={500} height={500}>

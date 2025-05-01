@@ -1,7 +1,4 @@
-import { BooleanLike } from 'common/react';
 import { useState } from 'react';
-
-import { useBackend } from '../backend';
 import {
   Button,
   Dropdown,
@@ -11,7 +8,10 @@ import {
   ProgressBar,
   Section,
   Stack,
-} from '../components';
+} from 'tgui-core/components';
+import { BooleanLike } from 'tgui-core/react';
+
+import { useBackend } from '../backend';
 import { Window } from '../layouts';
 
 type Data = {
@@ -69,15 +69,14 @@ export const MineBot = (props) => {
               title={bot_name}
               buttons={
                 <Button.Input
+                  buttonText="Rename"
                   color="transparent"
-                  onCommit={(e, value) =>
+                  onCommit={(value) =>
                     act('set_name', {
                       chosen_name: value,
                     })
                   }
-                >
-                  Rename
-                </Button.Input>
+                />
               }
             >
               <Stack vertical>
@@ -97,7 +96,7 @@ export const MineBot = (props) => {
                 <Stack.Item ml="25%">
                   <Dropdown
                     width="65%"
-                    displayText={selectedColor?.color_name}
+                    selected={selectedColor?.color_name}
                     options={possible_colors.map((possible_color) => {
                       return possible_color.color_name;
                     })}

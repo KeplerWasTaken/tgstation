@@ -6,39 +6,45 @@ GLOBAL_LIST_INIT(command_strings, list(
 	"home" = "RETURN HOME",
 ))
 
+#define SENTIENT_BOT_RESET_TIMER 45 SECONDS
+
 /mob/living/basic/bot
 	icon = 'icons/mob/silicon/aibots.dmi'
 	layer = MOB_LAYER
 	gender = NEUTER
 	mob_biotypes = MOB_ROBOTIC
 	basic_mob_flags = DEL_ON_DEATH
-	icon = 'icons/mob/silicon/aibots.dmi'
-	icon_state = "medibot0"
-	base_icon_state = "medibot"
+	density = FALSE
+
 	damage_coeff = list(BRUTE = 1, BURN = 1, TOX = 0, STAMINA = 0, OXY = 0)
 	habitable_atmos = null
 	hud_possible = list(DIAG_STAT_HUD, DIAG_BOT_HUD, DIAG_HUD, DIAG_BATT_HUD, DIAG_PATH_HUD = HUD_LIST_LIST)
+
 	maximum_survivable_temperature = INFINITY
 	minimum_survivable_temperature = 0
-	has_unlimited_silicon_privilege = TRUE
+
 	sentience_type = SENTIENCE_ARTIFICIAL
 	status_flags = NONE //no default canpush
-	faction = list(FACTION_MINING)
 	ai_controller = /datum/ai_controller/basic_controller/bot
-	pass_flags = PASSFLAPS
+	pass_flags = PASSFLAPS | PASSMOB
+
 	verb_say = "states"
 	verb_ask = "queries"
 	verb_exclaim = "declares"
 	verb_yell = "alarms"
+
 	initial_language_holder = /datum/language_holder/synthetic
 	bubble_icon = "machine"
+
 	speech_span = SPAN_ROBOT
-	faction = list(FACTION_NEUTRAL, FACTION_SILICON, FACTION_TURRET)
+	faction = list(FACTION_SILICON, FACTION_NEUTRAL, FACTION_TURRET)
 	light_system = OVERLAY_LIGHT
 	light_range = 3
 	light_power = 0.6
 	speed = 3
+
 	req_one_access = list(ACCESS_ROBOTICS)
+	interaction_flags_click = ALLOW_SILICON_REACH
 	///The Robot arm attached to this robot - has a 50% chance to drop on death.
 	var/robot_arm = /obj/item/bodypart/arm/right/robot
 	///The inserted (if any) pAI in this bot.
@@ -48,6 +54,7 @@ GLOBAL_LIST_INIT(command_strings, list(
 	///All initial access this bot started with.
 	var/list/initial_access = list()
 	///Bot-related mode flags on the Bot indicating how they will act. BOT_MODE_ON | BOT_MODE_AUTOPATROL | BOT_MODE_REMOTE_ENABLED | BOT_MODE_CAN_BE_SAPIENT | BOT_MODE_ROUNDSTART_POSSESSION
+	/// DO NOT MODIFY MANUALLY, USE set_bot_mode_flags. If you don't shit breaks BAD
 	var/bot_mode_flags = BOT_MODE_ON | BOT_MODE_REMOTE_ENABLED | BOT_MODE_CAN_BE_SAPIENT | BOT_MODE_ROUNDSTART_POSSESSION
 	///Bot-related cover flags on the Bot to deal with what has been done to their cover, including emagging. BOT_COVER_MAINTS_OPEN | BOT_COVER_LOCKED | BOT_COVER_EMAGGED | BOT_COVER_HACKED
 	var/bot_access_flags = BOT_COVER_LOCKED
@@ -77,7 +84,7 @@ GLOBAL_LIST_INIT(command_strings, list(
 	var/list/current_pathed_turfs = list()
 
 	///The type of data HUD the bot uses. Diagnostic by default.
-	var/data_hud_type = DATA_HUD_DIAGNOSTIC_BASIC
+	var/data_hud_type = DATA_HUD_DIAGNOSTIC
 	/// If true we will allow ghosts to control this mob
 	var/can_be_possessed = FALSE
 	/// Message to display upon possession
@@ -92,17 +99,20 @@ GLOBAL_LIST_INIT(command_strings, list(
 		TRAIT_IMMOBILIZED,
 		TRAIT_HANDS_BLOCKED,
 	)
+	///name of the UI we will attempt to open
+	var/bot_ui = "SimpleBot"
 	/// If true we will offer this
 	COOLDOWN_DECLARE(offer_ghosts_cooldown)
 
 /mob/living/basic/bot/Initialize(mapload)
 	. = ..()
 
-	AddElement(/datum/element/relay_attackers)
+	add_traits(list(TRAIT_SILICON_ACCESS, TRAIT_REAGENT_SCANNER, TRAIT_UNOBSERVANT), INNATE_TRAIT)
+	AddElement(/datum/element/ai_retaliate)
 	RegisterSignal(src, COMSIG_MOVABLE_MOVED, PROC_REF(handle_loop_movement))
 	RegisterSignal(src, COMSIG_ATOM_WAS_ATTACKED, PROC_REF(after_attacked))
 	RegisterSignal(src, COMSIG_MOB_TRIED_ACCESS, PROC_REF(attempt_access))
-	ADD_TRAIT(src, TRAIT_NO_GLIDE, INNATE_TRAIT)
+	add_traits(list(TRAIT_NO_GLIDE, TRAIT_SILICON_EMOTES_ALLOWED), INNATE_TRAIT)
 	GLOB.bots_list += src
 
 	// Give bots a fancy new ID card that can hold any access.
@@ -131,9 +141,6 @@ GLOBAL_LIST_INIT(command_strings, list(
 		var/datum/atom_hud/datahud = GLOB.huds[data_hud_type]
 		datahud.show_to(src)
 
-	if(HAS_TRAIT(SSstation, STATION_TRAIT_BOTS_GLITCHED))
-		randomize_language_if_on_station()
-
 	if(mapload && is_station_level(z) && (bot_mode_flags & BOT_MODE_CAN_BE_SAPIENT) && (bot_mode_flags & BOT_MODE_ROUNDSTART_POSSESSION))
 		enable_possession(mapload = mapload)
 
@@ -142,6 +149,11 @@ GLOBAL_LIST_INIT(command_strings, list(
 	ai_controller.set_blackboard_key(BB_ANNOUNCE_ABILITY, pa_system)
 	ai_controller.set_blackboard_key(BB_RADIO_CHANNEL, radio_channel)
 	update_appearance()
+
+/mob/living/basic/bot/proc/set_mode_flags(mode_flags)
+	SHOULD_CALL_PARENT(TRUE)
+	bot_mode_flags = mode_flags
+	SEND_SIGNAL(src, COMSIG_BOT_MODE_FLAGS_SET, mode_flags)
 
 /mob/living/basic/bot/proc/get_mode()
 	if(client) //Player bots do not have modes, thus the override. Also an easy way for PDA users/AI to know when a bot is a player.
@@ -173,7 +185,7 @@ GLOBAL_LIST_INIT(command_strings, list(
 /mob/living/basic/bot/proc/turn_on()
 	if(stat == DEAD)
 		return FALSE
-	bot_mode_flags |= BOT_MODE_ON
+	set_mode_flags(bot_mode_flags | BOT_MODE_ON)
 	remove_traits(list(TRAIT_INCAPACITATED, TRAIT_IMMOBILIZED, TRAIT_HANDS_BLOCKED), POWER_LACK_TRAIT)
 	set_light_on(bot_mode_flags & BOT_MODE_ON ? TRUE : FALSE)
 	update_appearance()
@@ -182,7 +194,7 @@ GLOBAL_LIST_INIT(command_strings, list(
 	return TRUE
 
 /mob/living/basic/bot/proc/turn_off()
-	bot_mode_flags &= ~BOT_MODE_ON
+	set_mode_flags(bot_mode_flags & ~BOT_MODE_ON)
 	add_traits(on_toggle_traits, POWER_LACK_TRAIT)
 	set_light_on(bot_mode_flags & BOT_MODE_ON ? TRUE : FALSE)
 	bot_reset() //Resets an AI's call, should it exist.
@@ -300,13 +312,14 @@ GLOBAL_LIST_INIT(command_strings, list(
 		return FALSE
 	bot_access_flags |= BOT_COVER_EMAGGED
 	bot_access_flags |= BOT_COVER_LOCKED
-	bot_mode_flags &= ~BOT_MODE_REMOTE_ENABLED //Manually emagging the bot also locks the AI from controlling it.
+	set_mode_flags(bot_mode_flags & ~BOT_MODE_REMOTE_ENABLED) //Manually emagging the bot also locks the AI from controlling it.
 	bot_reset()
 	turn_on() //The bot automatically turns on when emagged, unless recently hit with EMP.
 	to_chat(src, span_userdanger("(#$*#$^^( OVERRIDE DETECTED"))
 	to_chat(src, span_boldnotice(get_emagged_message()))
 	if(user)
 		log_combat(user, src, "emagged")
+	emag_effects(user)
 	return TRUE
 
 /mob/living/basic/bot/examine(mob/user)
@@ -357,16 +370,12 @@ GLOBAL_LIST_INIT(command_strings, list(
 /mob/living/basic/bot/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, "SimpleBot", name)
+		ui = new(user, src, bot_ui, name)
 		ui.open()
 
-/mob/living/basic/bot/AltClick(mob/user)
-	. = ..()
-	if(!can_interact(user))
-		return
-	if(!user.can_perform_action(src, ALLOW_SILICON_REACH))
-		return
+/mob/living/basic/bot/click_alt(mob/user)
 	unlock_with_id(user)
+	return CLICK_ACTION_SUCCESS
 
 /mob/living/basic/bot/proc/unlock_with_id(mob/living/user)
 	if(bot_access_flags & BOT_COVER_EMAGGED)
@@ -413,7 +422,7 @@ GLOBAL_LIST_INIT(command_strings, list(
 	heal_overall_damage(10)
 	user.visible_message(span_notice("[user] repairs [src]!"),span_notice("You repair [src]."))
 
-/mob/living/basic/bot/attackby(obj/item/attacking_item, mob/living/user, params)
+/mob/living/basic/bot/attackby(obj/item/attacking_item, mob/living/user, list/modifiers)
 	if(attacking_item.GetID())
 		unlock_with_id(user)
 		return
@@ -510,10 +519,9 @@ GLOBAL_LIST_INIT(command_strings, list(
 		item_to_drop = drop_item
 		item_to_drop.forceMove(dropzone)
 
-	if(istype(item_to_drop, /obj/item/stock_parts/cell))
-		var/obj/item/stock_parts/cell/dropped_cell = item_to_drop
+	if(istype(item_to_drop, /obj/item/stock_parts/power_store/cell))
+		var/obj/item/stock_parts/power_store/cell/dropped_cell = item_to_drop
 		dropped_cell.charge = 0
-		dropped_cell.update_appearance()
 		return
 
 	if(istype(item_to_drop, /obj/item/storage))
@@ -529,6 +537,7 @@ GLOBAL_LIST_INIT(command_strings, list(
 /mob/living/basic/bot/proc/bot_reset(bypass_ai_reset = FALSE)
 	SEND_SIGNAL(src, COMSIG_BOT_RESET)
 	access_card.set_access(initial_access)
+	update_bot_mode(new_mode = src::mode)
 	diag_hud_set_botstat()
 	diag_hud_set_botmode()
 	clear_path_hud()
@@ -549,15 +558,17 @@ GLOBAL_LIST_INIT(command_strings, list(
 	// process control input
 	switch(command)
 		if("patroloff")
-			bot_reset() //HOLD IT!! //OBJECTION!!
-			bot_mode_flags &= ~BOT_MODE_AUTOPATROL
+			set_patrol_off()
 		if("patrolon")
-			bot_mode_flags |= BOT_MODE_AUTOPATROL
+			set_mode_flags(bot_mode_flags | BOT_MODE_AUTOPATROL)
 		if("summon")
 			summon_bot(user, user_access = user_access)
 		if("ejectpai")
 			eject_pai_remote(user)
 
+/mob/living/basic/bot/proc/set_patrol_off()
+	bot_reset()
+	set_mode_flags(bot_mode_flags & ~BOT_MODE_AUTOPATROL)
 
 /mob/living/basic/bot/proc/bot_control_message(command, user)
 	if(command == "summon")
@@ -604,15 +615,16 @@ GLOBAL_LIST_INIT(command_strings, list(
 		if("maintenance")
 			bot_access_flags ^= BOT_COVER_MAINTS_OPEN
 		if("patrol")
-			bot_mode_flags ^= BOT_MODE_AUTOPATROL
+			set_mode_flags(bot_mode_flags ^ BOT_MODE_AUTOPATROL)
 			bot_reset()
 		if("airplane")
-			bot_mode_flags ^= BOT_MODE_REMOTE_ENABLED
+			set_mode_flags(bot_mode_flags ^ BOT_MODE_REMOTE_ENABLED)
 		if("hack")
 			if(!HAS_SILICON_ACCESS(the_user))
 				return
 			if(!(bot_access_flags & BOT_COVER_EMAGGED))
 				bot_access_flags |= (BOT_COVER_LOCKED|BOT_COVER_EMAGGED|BOT_COVER_HACKED)
+				emag_effects(the_user)
 				to_chat(the_user, span_warning("You overload [src]'s [hackables]."))
 				message_admins("Safety lock of [ADMIN_LOOKUPFLW(src)] was disabled by [ADMIN_LOOKUPFLW(the_user)] in [ADMIN_VERBOSEJMP(the_user)]")
 				the_user.log_message("disabled safety lock of [the_user]", LOG_GAME)
@@ -621,7 +633,7 @@ GLOBAL_LIST_INIT(command_strings, list(
 				to_chat(src, span_boldnotice(get_emagged_message()))
 				return
 			if(!(bot_access_flags & BOT_COVER_HACKED))
-				to_chat(the_user, span_boldannounce("You fail to repair [src]'s [hackables]."))
+				to_chat(the_user, span_bolddanger("You fail to repair [src]'s [hackables]."))
 				return
 			bot_access_flags &= ~(BOT_COVER_EMAGGED|BOT_COVER_HACKED)
 			to_chat(the_user, span_notice("You reset the [src]'s [hackables]."))
@@ -707,7 +719,7 @@ GLOBAL_LIST_INIT(command_strings, list(
 		if(isnull(mind))
 			mind.transfer_to(paicard.pai)
 		else
-			paicard.pai.key = key
+			paicard.pai.PossessByPlayer(key)
 	else
 		ghostize(FALSE) // The pAI card that just got ejected was dead.
 
@@ -758,9 +770,7 @@ GLOBAL_LIST_INIT(command_strings, list(
 /mob/living/basic/bot/proc/attempt_access(mob/bot, obj/door_attempt)
 	SIGNAL_HANDLER
 
-	if(door_attempt.check_access(access_card))
-		return ACCESS_ALLOWED
-	return ACCESS_DISALLOWED
+	return (door_attempt.check_access(access_card) ? ACCESS_ALLOWED : ACCESS_DISALLOWED)
 
 /mob/living/basic/bot/proc/generate_speak_list()
 	return null
@@ -773,23 +783,25 @@ GLOBAL_LIST_INIT(command_strings, list(
 	initial_access = access_card.access.Copy()
 
 
-/mob/living/basic/bot/proc/summon_bot(atom/caller, turf/turf_destination, user_access = list(), grant_all_access = FALSE)
-	if(isAI(caller) && !set_ai_caller(caller))
+/mob/living/basic/bot/proc/summon_bot(atom/summoner, turf/turf_destination, user_access = list(), grant_all_access = FALSE)
+	if(isAI(summoner) && !set_ai_caller(summoner))
 		return FALSE
-	bot_reset(bypass_ai_reset = isAI(caller))
-	var/turf/destination = turf_destination ? turf_destination : get_turf(caller)
+	bot_reset(bypass_ai_reset = isAI(summoner))
+	var/turf/destination = turf_destination ? turf_destination : get_turf(summoner)
 	ai_controller?.set_blackboard_key(BB_BOT_SUMMON_TARGET, destination)
 	var/list/access_to_grant = grant_all_access ? REGION_ACCESS_ALL_STATION : user_access + initial_access
 	access_card.set_access(access_to_grant)
 	speak("Responding.", radio_channel)
 	update_bot_mode(new_mode = BOT_SUMMON)
+	if(client) //if we're sentient, we reset ourselves after a short period
+		addtimer(CALLBACK(src, PROC_REF(bot_reset)), SENTIENT_BOT_RESET_TIMER)
 	return TRUE
 
-/mob/living/basic/bot/proc/set_ai_caller(mob/living/caller)
+/mob/living/basic/bot/proc/set_ai_caller(mob/living/ai_caller)
 	var/atom/calling_ai = calling_ai_ref?.resolve()
 	if(!isnull(calling_ai) && calling_ai != src)
 		return FALSE
-	calling_ai_ref = WEAKREF(caller)
+	calling_ai_ref = WEAKREF(ai_caller)
 	return TRUE
 
 /mob/living/basic/bot/proc/update_bot_mode(new_mode, update_hud = TRUE)
@@ -804,8 +816,18 @@ GLOBAL_LIST_INIT(command_strings, list(
 	if(attack_flags & ATTACKER_DAMAGING_ATTACK)
 		do_sparks(number = 5, cardinal_only = TRUE, source = src)
 
+/mob/living/basic/bot/proc/emag_effects(user)
+	return
+
 /mob/living/basic/bot/spawn_gibs(drop_bitflags = NONE)
 	new /obj/effect/gibspawner/robot(drop_location(), src)
 
+/mob/living/basic/bot/get_hit_area_message(input_area)
+	// we just get hit, there's no complexity for hitting an arm (if it exists) or anything.
+	// we also need to return an empty string as otherwise it would falsely say that we get hit in the chest or something strange like that (bots don't have "chests")
+	return ""
+
 /mob/living/basic/bot/proc/on_bot_movement(atom/movable/source, atom/oldloc, dir, forced)
 	return
+
+#undef SENTIENT_BOT_RESET_TIMER

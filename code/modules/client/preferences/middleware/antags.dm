@@ -108,7 +108,7 @@ GLOBAL_LIST_INIT(non_ruleset_antagonists, list(
 	for(var/antag_key in GLOB.non_ruleset_antagonists)
 		var/datum/antagonist/antag = GLOB.non_ruleset_antagonists[antag_key]
 		var/antag_flag = initial(antag.job_rank)
-		
+
 		var/days_needed = preferences.parent?.get_remaining_days(
 			GLOB.special_roles[antag_flag]
 		)
@@ -180,4 +180,4 @@ GLOBAL_LIST_INIT(non_ruleset_antagonists, list(
 /// Serializes an antag name to be used for preferences UI
 /proc/serialize_antag_name(antag_name)
 	// These are sent through CSS, so they need to be safe to use as class names.
-	return lowertext(sanitize_css_class_name(antag_name))
+	return LOWER_TEXT(sanitize_css_class_name(antag_name))

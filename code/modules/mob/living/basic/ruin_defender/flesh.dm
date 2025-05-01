@@ -1,3 +1,12 @@
+/// Chance per second to print a warning text
+#define LIVING_FLESH_WARN_CHANCE 3
+/// Chance per second to perform an unwanted interaction
+#define LIVING_FLESH_INTERFERENCE_CHANCE 1.5
+/// Chance to caress instead of grab something nearby without combat mode
+#define LIVING_FLESH_TOUCH_CHANCE 30
+/// Chance to punch instead of grab something nearby in combat mode
+#define LIVING_FLESH_COMBAT_TOUCH_CHANCE 70
+
 /datum/ai_controller/basic_controller/living_limb_flesh
 	blackboard = list(
 		BB_TARGETING_STRATEGY = /datum/targeting_strategy/basic,
@@ -22,7 +31,7 @@
 	melee_damage_upper = 10
 	health = 20
 	maxHealth = 20
-	attack_sound = 'sound/weapons/bite.ogg'
+	attack_sound = 'sound/items/weapons/bite.ogg'
 	attack_vis_effect = ATTACK_EFFECT_BITE
 	attack_verb_continuous = "tries desperately to attach to"
 	attack_verb_simple = "try to attach to"
@@ -37,6 +46,9 @@
 	AddElement(/datum/element/death_drops, string_list(list(/obj/effect/gibspawner/generic)))
 	if(!isnull(limb))
 		register_to_limb(limb)
+
+/mob/living/basic/living_limb_flesh/apply_target_randomisation()
+	AddElement(/datum/element/attack_zone_randomiser, GLOB.limb_zones)
 
 /mob/living/basic/living_limb_flesh/Destroy(force)
 	. = ..()
@@ -53,36 +65,47 @@
 	if(isnull(current_bodypart) || isnull(current_bodypart.owner))
 		return
 	var/mob/living/carbon/human/victim = current_bodypart.owner
-	if(SPT_PROB(3, SSMOBS_DT))
-		to_chat(victim, span_warning("The thing posing as your limb makes you feel funny...")) //warn em
-	//firstly as a sideeffect we drain nutrition from our host
+	if(SPT_PROB(LIVING_FLESH_WARN_CHANCE, SSMOBS_DT))
+		to_chat(victim, span_warning("The skin on your [current_bodypart.plaintext_zone] crawls."))
+
 	victim.adjust_nutrition(-1.5)
 
-	if(!SPT_PROB(1.5, SSMOBS_DT))
+	if(!SPT_PROB(LIVING_FLESH_INTERFERENCE_CHANCE, SSMOBS_DT))
 		return
 
-	if(istype(current_bodypart, /obj/item/bodypart/arm))
-		var/list/candidates = list()
-		for(var/atom/movable/movable in orange(victim, 1))
-			if(movable.anchored)
-				continue
-			if(movable == victim)
-				continue
-			if(!victim.CanReach(movable))
-				continue
-			candidates += movable
-		var/atom/movable/candidate = pick(candidates)
-		if(isnull(candidate))
+	if(istype(current_bodypart, /obj/item/bodypart/leg))
+		if(HAS_TRAIT(victim, TRAIT_IMMOBILIZED))
 			return
-		victim.start_pulling(candidate, supress_message = TRUE)
-		victim.visible_message(span_warning("[victim][victim.p_s()] [current_bodypart] instinctually starts feeling [candidate]!"))
+		step(victim, pick(GLOB.cardinals))
+		to_chat(victim, span_warning("Your [current_bodypart.plaintext_zone] moves on its own!"))
 		return
 
-	if(HAS_TRAIT(victim, TRAIT_IMMOBILIZED))
+	var/list/candidates = list()
+	for(var/atom/movable/movable in orange(victim, 1))
+		if(movable == victim)
+			continue
+		if(!victim.CanReach(movable) || movable.invisibility > victim.see_invisible)
+			continue
+		candidates += movable
+	if(!length(candidates))
 		return
-	step(victim, pick(GLOB.cardinals))
-	to_chat(victim, span_warning("Your [current_bodypart] moves on its own!"))
+	var/atom/movable/candidate = pick(candidates)
+	if(isnull(candidate))
+		return
 
+	if (!prob(victim.combat_mode ? LIVING_FLESH_COMBAT_TOUCH_CHANCE : LIVING_FLESH_TOUCH_CHANCE) && candidate.can_be_pulled(user = victim, force = victim.pull_force))
+		victim.visible_message(span_warning("[victim]'s [current_bodypart.plaintext_zone] suddenly fastens around [candidate]!"))
+		INVOKE_ASYNC(victim, TYPE_PROC_REF(/atom/movable, start_pulling), candidate, supress_message = TRUE)
+		return
+
+	victim.visible_message(span_warning("[victim]'s [current_bodypart.plaintext_zone] suddenly spasms towards [candidate]!"))
+	var/active_hand = victim.active_hand_index
+	var/new_index = (current_bodypart.body_zone == BODY_ZONE_L_ARM) ? LEFT_HANDS : RIGHT_HANDS
+	if (active_hand != new_index)
+		victim.swap_hand(new_index, TRUE)
+	victim.resolve_unarmed_attack(candidate)
+	if (active_hand != victim.active_hand_index) // Different check in case we failed to swap hands previously due to holding a bulky item
+		victim.swap_hand(active_hand, TRUE)
 
 /mob/living/basic/living_limb_flesh/melee_attack(mob/living/carbon/human/target, list/modifiers, ignore_cooldown)
 	. = ..()
@@ -122,10 +145,14 @@
 		if(BODY_ZONE_R_LEG)
 			part_type = /obj/item/bodypart/leg/right/flesh
 
-	target.visible_message(span_danger("[src] [target_part ? "tears off and attaches itself" : "attaches itself"] to where [target][target.p_s()] limb used to be!"))
-	var/obj/item/bodypart/new_bodypart = new part_type(TRUE) //dont_spawn_flesh, we cant use named arguments here
-	new_bodypart.replace_limb(target, TRUE)
+	if (!isnull(target_part))
+		target.visible_message(span_danger("[src] tears off [target]'s [target_part.plaintext_zone] and attaches itself in [target_part.p_their()] place!"), span_userdanger("[src] tears off your [target_part.plaintext_zone] and attaches itself in [target_part.p_their()] place!"))
+	else
+		target.visible_message(span_danger("[src] attaches itself to where [target]'s [target.parse_zone_with_bodypart(target_zone)] used to be!"), span_userdanger("[src] attaches itself to where your [target.parse_zone_with_bodypart(target_zone)] used to be!"))
+
+	var/obj/item/bodypart/new_bodypart = new part_type()
 	forceMove(new_bodypart)
+	new_bodypart.replace_limb(target, TRUE)
 	register_to_limb(new_bodypart)
 
 /mob/living/basic/living_limb_flesh/proc/owner_shocked(datum/source, shock_damage, shock_source, siemens_coeff, flags)
@@ -136,7 +163,7 @@
 	if(!detach_self())
 		return
 	var/turf/our_location = get_turf(src)
-	our_location.visible_message(span_warning("[part_owner][part_owner.p_s()] [current_bodypart] begins to convulse wildly!"))
+	our_location.visible_message(span_warning("[part_owner][part_owner.p_s()] [current_bodypart.plaintext_zone] begins to convulse wildly!"))
 
 /mob/living/basic/living_limb_flesh/proc/owner_died(datum/source, gibbed)
 	SIGNAL_HANDLER
@@ -177,3 +204,7 @@
 	forceMove(limb.drop_location())
 	qdel(limb)
 
+#undef LIVING_FLESH_TOUCH_CHANCE
+#undef LIVING_FLESH_COMBAT_TOUCH_CHANCE
+#undef LIVING_FLESH_WARN_CHANCE
+#undef LIVING_FLESH_INTERFERENCE_CHANCE

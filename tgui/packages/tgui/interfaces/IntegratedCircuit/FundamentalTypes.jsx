@@ -1,4 +1,11 @@
-import { Button, Dropdown, Input, NumberInput, Stack } from '../../components';
+import {
+  Button,
+  Dropdown,
+  Input,
+  NumberInput,
+  Stack,
+} from 'tgui-core/components';
+
 import { BasicInput } from './BasicInput';
 import { OPTION_DROPDOWN_LARGE_CHAR_AMOUNT } from './constants';
 
@@ -10,7 +17,7 @@ export const FUNDAMENTAL_DATA_TYPES = {
         <Input
           placeholder={name}
           value={value}
-          onChange={(e, val) => setValue(val)}
+          onChange={setValue}
           width="96px"
         />
       </BasicInput>
@@ -88,7 +95,7 @@ export const FUNDAMENTAL_DATA_TYPES = {
         color={'transparent'}
         options={data}
         onSelected={setValue}
-        displayText={value}
+        selected={value}
         menuWidth={large ? '200px' : undefined}
       />
     );
@@ -114,7 +121,7 @@ export const FUNDAMENTAL_DATA_TYPES = {
             <Input
               placeholder={name}
               value={value}
-              onChange={(e, val) => setValue(val)}
+              onChange={setValue}
               width="64px"
             />
           </Stack.Item>

@@ -16,12 +16,10 @@
 	attack_verb_simple = list("bash", "batter", "bludgeon", "thrash", "whack")
 	resistance_flags = FLAMMABLE
 	max_integrity = 150
-	var/folder_path = /obj/item/folder //this is the path of the folder that gets spawned in New()
+	storage_type = /datum/storage/briefcase
 
-/obj/item/storage/briefcase/Initialize(mapload)
-	. = ..()
-	atom_storage.max_specific_storage = WEIGHT_CLASS_NORMAL
-	atom_storage.max_total_storage = 21
+	/// The path of the folder that gets spawned in New()
+	var/folder_path = /obj/item/folder 
 
 /obj/item/storage/briefcase/PopulateContents()
 	new /obj/item/pen(src)
@@ -86,8 +84,6 @@
 
 /obj/item/storage/briefcase/secure/Initialize(mapload)
 	. = ..()
-	atom_storage.max_total_storage = 21
-	atom_storage.max_specific_storage = WEIGHT_CLASS_NORMAL
 	AddComponent(/datum/component/lockable_storage)
 
 ///Syndie variant of Secure Briefcase. Contains space cash, slightly more robust.
@@ -110,3 +106,12 @@
 	new /obj/item/clothing/mask/balaclava(src)
 	new /obj/item/bodybag(src)
 	new /obj/item/soap/nanotrasen(src)
+
+/obj/item/storage/briefcase/hitchiker/PopulateContents()
+	new /obj/item/food/sandwich/peanut_butter_jelly(src)
+	new /obj/item/food/sandwich/peanut_butter_jelly(src)
+	new /obj/item/reagent_containers/cup/glass/waterbottle/large(src)
+	new /obj/item/soap(src)
+	new /obj/item/pillow/random(src)
+	new /obj/item/tank/internals/emergency_oxygen(src)
+	new /obj/item/tank/internals/emergency_oxygen(src)
