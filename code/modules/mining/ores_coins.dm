@@ -244,7 +244,7 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 	/// the timer
 	var/det_timer
 	/// How pure this gibtonite is, determines the explosion produced by it and is derived from the det_time of the rock wall it was taken from, higher value = better
-	var/quality = GIBTONITE_QUALITY_LOW
+	var/gibtonite_quality = GIBTONITE_QUALITY_LOW
 	/// who attached the rig to us
 	var/attacher
 	/// the assembly rig
@@ -328,7 +328,7 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 		deltimer(det_timer)
 	defuser?.visible_message(span_notice("The chain reaction stopped! ...The ore's quality looks diminished."), span_notice("You stopped the chain reaction. ...The ore's quality looks diminished."))
 	icon_state = "gibtonite"
-	quality = GIBTONITE_QUALITY_LOW
+	gibtonite_quality = GIBTONITE_QUALITY_LOW
 
 /obj/item/gibtonite/attack_self(user)
 	if(wires)
@@ -368,7 +368,7 @@ GLOBAL_LIST_INIT(sand_recipes, list(\
 
 /obj/item/gibtonite/proc/detonate(notify_admins)
 	if(primed)
-		switch(quality)
+		switch(gibtonite_quality)
 			if(GIBTONITE_QUALITY_HIGH)
 				explosion(src, devastation_range = 2, heavy_impact_range = 4, light_impact_range = 9, flame_range = 0, flash_range = 0, adminlog = notify_admins)
 			if(GIBTONITE_QUALITY_MEDIUM)

@@ -850,10 +850,10 @@
 	if(stage == GIBTONITE_STABLE) //Gibtonite deposit is now benign and extractable. Depending on how close you were to it blowing up before defusing, you get better quality ore.
 		var/obj/item/gibtonite/ore = new (src)
 		if(det_time <= 0)
-			ore.quality = GIBTONITE_QUALITY_HIGH
+			ore.gibtonite_quality = GIBTONITE_QUALITY_HIGH
 			ore.icon_state = "gibtonite_3"
 		if(det_time >= 1 && det_time <= 2)
-			ore.quality = GIBTONITE_QUALITY_MEDIUM
+			ore.gibtonite_quality = GIBTONITE_QUALITY_MEDIUM
 			ore.icon_state = "gibtonite_2"
 
 	var/flags = NONE

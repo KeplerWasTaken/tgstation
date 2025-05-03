@@ -628,7 +628,7 @@
 			thing.forceMove(drop_location())
 		qdel(nade)
 	var/obj/item/gibtonite/ore = locate() in src
-	switch(ore.quality)
+	switch(ore.gibtonite_quality)
 		if(GIBTONITE_QUALITY_LOW)
 			range_heavy -= 2
 		if(GIBTONITE_QUALITY_HIGH)
