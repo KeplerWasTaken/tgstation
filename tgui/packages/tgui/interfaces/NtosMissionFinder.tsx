@@ -2,12 +2,12 @@
 import { useState } from 'react';
 import { useBackend } from '../backend';
 
-import { Stack, Tabs } from '../components';
 import { NtosWindow } from '../layouts';
 
 import { Overview } from './NtosMissionFinder/Overview';
 import { Mission } from './NtosMissionFinder/Mission';
 import { Contractor } from './NtosMissionFinder/Contractor';
+import { Stack, Tabs } from 'tgui-core/components';
 
 export type NtosMissionFinderData = {
 	user: string;

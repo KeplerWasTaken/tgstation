@@ -1,5 +1,5 @@
+import { Icon, Section, Stack, Button, Box } from "tgui-core/components";
 import { useBackend } from "../../backend";
-import { Section, Stack, Button, Box, Icon } from "../../components";
 import { MissionData, NtosMissionFinderData } from "../NtosMissionFinder";
 
 
@@ -100,7 +100,7 @@ export const Mission = (props) => {
 		<Section>
 			<Stack align="baseline">
 				<Stack.Item grow bold>
-					Mission: {mission.mission_name} - {mission.mission_type} - Difficulty: <Difficulty difficulty={mission.mission_difficulty.toString()}/>
+					Mission: {mission.mission_name} - {mission.mission_type} - Difficulty: <Difficulty difficulty={mission.mission_difficulty.toString()} />
 				</Stack.Item>
 				<Stack.Item
 					shrink={0}

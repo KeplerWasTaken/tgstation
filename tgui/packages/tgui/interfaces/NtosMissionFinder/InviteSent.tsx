@@ -1,5 +1,5 @@
+import { Section, Stack, Button } from "tgui-core/components";
 import { useBackend } from "../../backend";
-import { Section, Stack, Button } from "../../components";
 import { InviteData, NtosMissionFinderData } from "../NtosMissionFinder";
 
 export const InviteSent = (props) => {

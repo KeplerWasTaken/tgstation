@@ -1,5 +1,5 @@
+import { Section, Stack, Button } from "tgui-core/components";
 import { useBackend } from "../../backend";
-import { Section, Stack, Button } from "../../components";
 import { MissionPlayerData, NtosMissionFinderData } from "../NtosMissionFinder";
 import { InviteReceived } from "./InviteReceived";
 import { InviteSent } from "./InviteSent";

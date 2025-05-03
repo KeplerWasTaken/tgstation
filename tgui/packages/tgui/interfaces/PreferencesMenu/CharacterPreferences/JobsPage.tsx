@@ -348,35 +348,6 @@ export function JobsPage() {
     <>
       <JoblessRoleDropdown />
       <Stack vertical fill>
-<<<<<<< HEAD:tgui/packages/tgui/interfaces/PreferencesMenu/JobsPage.tsx
-        <Gap amount={22} />
-
-        <Stack.Item>
-          <Stack fill className="PreferencesMenu__Jobs">
-            <Stack.Item mr={1}>
-              <Gap amount={36} />
-
-              <PriorityHeaders />
-
-              <Department department="Engineering">
-                <Gap amount={6} />
-              </Department>
-
-              <Department department="Science">
-                <Gap amount={6} />
-              </Department>
-
-              <Department department="Silicon">
-                <Gap amount={12} />
-              </Department>
-
-              {/* <Department department="Assistant">
-                <Gap amount={6} />
-              </Department> */}
-
-              <Department department="Contractor"/>
-
-=======
         <Stack.Item mt={15}>
           <Stack fill g={1} className="PreferencesMenu__Jobs">
             <Stack.Item>
@@ -387,7 +358,6 @@ export function JobsPage() {
                 <Department department="Silicon" />
                 <Department department="Assistant" />
               </Stack>
->>>>>>> 96cdac9d0b01c732b5180b24f94728a130063370:tgui/packages/tgui/interfaces/PreferencesMenu/CharacterPreferences/JobsPage.tsx
             </Stack.Item>
             <Stack.Item mt={-5.9}>
               <Stack vertical>
