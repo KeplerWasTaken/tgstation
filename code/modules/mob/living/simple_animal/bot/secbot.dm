@@ -525,7 +525,7 @@
 			ed_assembly.created_name = name
 			new /obj/item/assembly/prox_sensor(Tsec)
 			var/obj/item/gun/energy/disabler/disabler_gun = new(Tsec)
-			disabler_gun.cell.charge = 0
+			disabler_gun.cells_set_charge(0)
 			disabler_gun.update_appearance()
 			if(prob(50))
 				new /obj/item/bodypart/leg/left/robot(Tsec)

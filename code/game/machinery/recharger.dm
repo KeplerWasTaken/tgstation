@@ -48,9 +48,8 @@
 	if(!status_display_message_shown)
 		. += span_notice("The status display reads:")
 
-	var/obj/item/stock_parts/power_store/charging_cell = charging.get_cell()
-	if(charging_cell)
-		. += span_notice("- \The [charging]'s cell is at <b>[charging_cell.percent()]%</b>.")
+	if(charging.has_power_cell())
+		. += span_notice("- \The [charging]'s cell is at <b>[charging.cells_get_percent()]%</b>.")
 		return
 	if(istype(charging, /obj/item/ammo_box/magazine/recharge))
 		var/obj/item/ammo_box/magazine/recharge/power_pack = charging
@@ -149,10 +148,10 @@
 	using_power = FALSE
 	if(isnull(charging))
 		return PROCESS_KILL
-	var/obj/item/stock_parts/power_store/charging_cell = charging.get_cell()
-	if(charging_cell)
-		if(charging_cell.charge < charging_cell.maxcharge)
-			charge_cell(charging_cell.chargerate * recharge_coeff * seconds_per_tick, charging_cell)
+	if(charging.has_power_cell())
+		if(charging.cells_get_charge() < charging.cells_get_max_charge())
+			var/obj/item/stock_parts/power_store/uncharged_cell = charging.cells_get_next_uncharged()
+			charge_cell(uncharged_cell.chargerate * recharge_coeff * seconds_per_tick, uncharged_cell)
 			using_power = TRUE
 		update_appearance()
 
@@ -194,8 +193,8 @@
 		return
 	if(istype(charging, /obj/item/gun/energy))
 		var/obj/item/gun/energy/energy_gun = charging
-		if(energy_gun.cell)
-			energy_gun.cell.emp_act(severity)
+		if(energy_gun.has_power_cell())
+			energy_gun.emp_power_cells(severity)
 
 	else if(istype(charging, /obj/item/melee/baton/security))
 		var/obj/item/melee/baton/security/batong = charging

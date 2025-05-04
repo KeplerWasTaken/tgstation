@@ -1,11 +1,9 @@
-// Special thank you to ERIS code, Lyroy, for being a good coder and giving a great example on how to work with components properly
-
 /obj/item
-	// List of ATTACHMENT_x Defines 
+	// List of attachments the tool can take
 	var/list/modular_slots_available = list()
 	// List of /obj/item/modular_attachment types that come preinstalled to the item
 	var/list/modular_initial_slots = list()
-	// List of /obj/item/modular_attachment of installed attachments
+	// List of actively /obj/item/modular_attachment of installed attachments
 	var/list/modular_attachments = list()
 	// List of ATTACHMENT_x Defines that are required to be able to use the tool
 	var/list/modular_required_to_operate = list()
@@ -27,6 +25,14 @@
 /obj/item/proc/SendModularSignals()
 	SEND_SIGNAL(src, COMSIG_UPGRADE_APPVAL, src)
 	SEND_SIGNAL(src, COMSIG_UPGRADE_ADDVAL, src)
+
+/obj/item/proc/GetAttachmentsBySlot(var/slot)
+	var/list/attachments = GetComponents(/datum/component/modular_attachment)
+	var/list/to_return = list()
+	for(var/datum/component/modular_attachment/attachment in attachments)
+		if (slot == attachment.slot_used)
+			to_return += attachment.get_attachment()
+	return to_return
 
 /proc/list2keys(list/mylist)
 	var/list/allVariables = splittext(list2params(mylist), "&")

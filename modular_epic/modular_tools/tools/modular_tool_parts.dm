@@ -12,7 +12,7 @@
 	modifications = list(MODIFICATION_TOOLSPEED = 0)
 	name = "Wrench Head"
 	desc = "A wrench head."
-    
+
 /obj/item/modular_attachment/tool/wrenchhandle
 	applicable_slots = list(ATTACHMENT_WRENCH_HANDLE)
 	modifications = list(MODIFICATION_TOOLSPEED = 0)
@@ -25,7 +25,7 @@
 // CROWBAR BASE
 /obj/item/crowbar
     modular_slots_available = list(ATTACHMENT_CROWBAR_BODY = 1, ATTACHMENT_CROWBAR_TIP = 1, ATTACHMENT_MAGIC_PAINT = 2)
-    modular_initial_slots =  = list()
+    modular_initial_slots = list()
 
 // WELDER BASE
 

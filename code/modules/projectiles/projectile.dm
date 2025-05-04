@@ -551,31 +551,34 @@
 
 		if(mode == PROJECTILE_PIERCE_HIT)
 			pierces += 1
-		//epicstation projectile hitting thing for mission logging
-	var/mob/living/mobfirer = null
-	var/mob/living/mobtarget = null
-	var/mobtarget_health_before
-	var/mob_status_before
 
-	if (isliving(firer))
-		mobfirer = firer
-	if (isliving(target))
-		mobtarget = target
-		mobtarget_health_before = mobtarget.health
-		mob_status_before = mobtarget.stat
-	//end
+		//epicstation projectile hitting thing for mission logging
+		var/mob/living/mobfirer = null
+		var/mob/living/mobtarget = null
+		var/mobtarget_health_before
+		var/mob_status_before
+
+		if (isliving(firer))
+			mobfirer = firer
+		if (isliving(target))
+			mobtarget = target
+			mobtarget_health_before = mobtarget.health
+			mob_status_before = mobtarget.stat
+		//end
+
 		// Targets should handle their impact logic on our own and if they decide that we hit them, they call our on_hit
 		var/result = target.projectile_hit(src, def_zone, mode == PROJECTILE_PIERCE_HIT)
-	//epicstation edit hitting thing for mission logging part 2
-	if (mobfirer && mobtarget)
-		var/wasKilled = mob_status_before != DEAD && mobtarget.stat == DEAD
-		var/damageTaken = mobtarget_health_before - mobtarget.health
 
-		if (mobfirer.missions_mission)
-			mobfirer.missions_mission.ConsiderLogging(mobfirer, mobtarget, damageTaken, damage_type, wasKilled)
-		else if (mobtarget.missions_mission)
-			mobtarget.missions_mission.ConsiderLogging(mobfirer, mobtarget, damageTaken, damage_type, wasKilled)
-	//end
+		//epicstation edit hitting thing for mission logging part 2
+		if (mobfirer && mobtarget)
+			var/wasKilled = mob_status_before != DEAD && mobtarget.stat == DEAD
+			var/damageTaken = mobtarget_health_before - mobtarget.health
+
+			if (mobfirer.missions_mission)
+				mobfirer.missions_mission.ConsiderLogging(mobfirer, mobtarget, damageTaken, damage_type, wasKilled)
+			else if (mobtarget.missions_mission)
+				mobtarget.missions_mission.ConsiderLogging(mobfirer, mobtarget, damageTaken, damage_type, wasKilled)
+		//end
 		if (result != BULLET_ACT_FORCE_PIERCE && max_pierces && pierces >= max_pierces)
 			return PROJECTILE_IMPACT_SUCCESSFUL
 

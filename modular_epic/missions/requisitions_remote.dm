@@ -21,12 +21,12 @@
 	if(!can_use_beacon(user))
 		return
 	builtin_order_console.ui_interact(user)
-    
+
 /obj/item/requisitions_remote/proc/can_use_beacon(mob/living/user)
 	if(user.can_perform_action(src, FORBID_TELEKINESIS_REACH))
 		return TRUE
 
-	playsound(src, 'sound/machines/buzz-sigh.ogg', 40, TRUE)
+	playsound(src, 'sound/machines/buzz/buzz-sigh.ogg', 40, TRUE)
 	return FALSE
 
 #define CATEGORY_REMOTE_REQUISITIONS "Remote Requisitions"
@@ -38,7 +38,7 @@
 				say("Orders can only be delievered to designated area missions.")
 				return
 	. = ..()
-	
+
 /obj/machinery/computer/order_console/requisitions_remote
 	cooldown_time = 120 SECONDS
 	forced_express = TRUE
@@ -51,20 +51,20 @@
 
 /datum/orderable_item/remote_requisitions/toolbox
 	name = "Tool Box"
-	item_path = /obj/item/storage/toolbox/mechanical
+	purchase_path = /obj/item/storage/toolbox/mechanical
 	cost_per_order = 30
 
 /datum/orderable_item/remote_requisitions/powercell
 	name = "Power Cell"
-	item_path = /obj/item/stock_parts/cell
+	purchase_path = /obj/item/stock_parts/power_store/cell
 	cost_per_order = 5
 
 /datum/orderable_item/remote_requisitions/driller
 	name = "Vein Driller"
-	item_path = /obj/item/mechdriller
+	purchase_path = /obj/item/mechdriller
 	cost_per_order = 120
 
 /datum/orderable_item/remote_requisitions/pickaxe
 	name = "Pickaxe"
-	item_path = /obj/item/pickaxe
+	purchase_path = /obj/item/pickaxe
 	cost_per_order = 20

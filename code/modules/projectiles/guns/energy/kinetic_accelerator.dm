@@ -535,7 +535,7 @@
 	if(ismineralturf(target_turf))
 		valid_repeat = TRUE
 	if(valid_repeat)
-		KA.cell.use(KA.cell.charge)
+		KA.cells_consume_charge(KA.cells_get_charge())
 		KA.attempt_reload(KA.recharge_time * 0.25) //If you hit, the cooldown drops to 0.75 seconds.
 
 /obj/item/borg/upgrade/modkit/lifesteal

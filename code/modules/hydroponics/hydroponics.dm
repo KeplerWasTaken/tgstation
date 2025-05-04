@@ -138,7 +138,7 @@
 	// If we've got a charged somatoray, we can mutation lock it.
 	if(istype(held_item, /obj/item/gun/energy/floragun) && myseed.endurance > FLORA_GUN_MIN_ENDURANCE && LAZYLEN(myseed.mutatelist))
 		var/obj/item/gun/energy/floragun/flower_gun = held_item
-		if(flower_gun.cell.charge >= flower_gun.cell.maxcharge)
+		if(flower_gun.cells_get_charge() >= flower_gun.cells_get_max_charge())
 			context[SCREENTIP_CONTEXT_LMB] = "Lock mutation"
 			return CONTEXTUAL_SCREENTIP_SET
 
@@ -1026,7 +1026,7 @@
 		return
 	else if(istype(O, /obj/item/gun/energy/floragun))
 		var/obj/item/gun/energy/floragun/flowergun = O
-		if(flowergun.cell.charge < flowergun.cell.maxcharge)
+		if(flowergun.cells_get_charge() < flowergun.cells_get_max_charge())
 			to_chat(user, span_notice("[flowergun] must be fully charged to lock in a mutation!"))
 			return
 		if(!myseed)
@@ -1052,7 +1052,7 @@
 				return
 			myseed.mutatelist = list(fresh_mut_list[locked_mutation])
 			myseed.set_endurance(myseed.endurance/2)
-			flowergun.cell.use(flowergun.cell.charge)
+			flowergun.cells_consume_charge(flowergun.cells_get_charge())
 			flowergun.update_appearance()
 			to_chat(user, span_notice("[myseed.plantname]'s mutation was set to [locked_mutation], depleting [flowergun]'s cell!"))
 			return

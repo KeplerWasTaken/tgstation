@@ -10,7 +10,7 @@
 	obj_flags = CONDUCTS_ELECTRICITY
 	slot_flags = ITEM_SLOT_BACK
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/pulse, /obj/item/ammo_casing/energy/electrode, /obj/item/ammo_casing/energy/laser)
-	cell_type = /obj/item/stock_parts/power_store/cell/pulse
+	modular_initial_slots = list(/obj/item/stock_parts/power_store/cell/pulse)
 
 /obj/item/gun/energy/pulse/Initialize(mapload)
 	. = ..()
@@ -44,7 +44,7 @@
 	icon_state = "pulse_carbine"
 	worn_icon_state = "gun"
 	inhand_icon_state = null
-	cell_type = /obj/item/stock_parts/power_store/cell/pulse/carbine
+	modular_initial_slots = list(/obj/item/stock_parts/power_store/cell/pulse/carbine)
 
 /obj/item/gun/energy/pulse/carbine/add_seclight_point()
 	AddComponent(/datum/component/seclite_attachable, \
@@ -66,7 +66,7 @@
 	name = "pulse destroyer"
 	desc = "A heavy-duty energy rifle built for pure destruction."
 	worn_icon_state = "pulse"
-	cell_type = /obj/item/stock_parts/power_store/cell/infinite
+	modular_initial_slots = list(/obj/item/stock_parts/power_store/cell/infinite)
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/pulse)
 
 /obj/item/gun/energy/pulse/destroyer/attack_self(mob/living/user)
@@ -80,7 +80,7 @@
 	icon_state = "pulse_pistol"
 	worn_icon_state = "gun"
 	inhand_icon_state = "gun"
-	cell_type = /obj/item/stock_parts/power_store/cell/pulse/pistol
+	modular_initial_slots = list(/obj/item/stock_parts/power_store/cell/pulse/pistol)
 
 /obj/item/gun/energy/pulse/pistol/taserless
 	ammo_type = list(/obj/item/ammo_casing/energy/laser/pulse, /obj/item/ammo_casing/energy/laser)
@@ -93,4 +93,4 @@
 	desc = "A compact pulse core in a classic handgun frame for Nanotrasen officers. It's not the size of the gun, it's the size of the hole it puts through people."
 	icon_state = "m1911"
 	inhand_icon_state = "gun"
-	cell_type = /obj/item/stock_parts/power_store/cell/infinite
+	modular_initial_slots = list(/obj/item/stock_parts/power_store/cell/infinite)

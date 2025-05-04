@@ -5,12 +5,12 @@
 	var/slot_used = null
 	dupe_mode = COMPONENT_DUPE_UNIQUE
 	can_transfer = TRUE
-	
+
 	//Actual effects of upgrades
 	var/list/tool_upgrades = list() //variable name(string) -> num
 
 	//Weapon upgrades
-	var/list/applicable_slots //Define(string). For checking if the gun already has something of this installed (No double trigger mods, for instance)
+	var/list/applicable_slots
 	var/list/modifications = list() //variable name(string) -> num
 
 /datum/component/modular_attachment/RegisterWithParent()
@@ -48,6 +48,8 @@
 	RegisterSignal(target, COMSIG_UPGRADE_APPVAL, PROC_REF(apply_values))
 	RegisterSignal(target, COMSIG_UPGRADE_ADDVAL, PROC_REF(add_values))
 	slot_used = GetApplicableSlot(target)
+	if (slot_used == ATTACHMENT_CELL_SMALL || slot_used == ATTACHMENT_CELL_MEDIUM || slot_used == ATTACHMENT_CELL_LARGE)
+		target.cells += parent
 	attachment.modular_slot_used = slot_used
 	target.modular_slots_available[slot_used]--
 	target.RefreshUpgrades()
@@ -74,3 +76,6 @@
 
 /datum/component/modular_attachment/proc/add_values(obj/item/target)
 	add_item_values(target)
+/datum/component/modular_attachment/proc/get_attachment()
+	var/obj/item/attachment = parent
+	return attachment

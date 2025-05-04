@@ -35,7 +35,7 @@
 	// Do we even have a car
 	if (!missionvehicle)
 		return FALSE
-	
+
 	if (!forced &&!IsEveryPlayerInVehicle())
 		return FALSE
 
@@ -63,7 +63,7 @@
 	for(var/mob/myMob in associatedEntries)
 		if (myMob.ckey)
 			associatedEntries -= myMob
-	
+
 
 /datum/mission/proc/GetListOFReadyPlayers()
 	var/list/listOfReadyPlayers = list()
@@ -88,26 +88,26 @@
 /datum/mission/proc/IsMissionClaimed()
 	if (!hostCkey)
 		return TRUE
-	return FALSE	
+	return FALSE
 /datum/mission/proc/GetFreeBaseMarker()
 	for(var/obj/missionmarker/myMarker in GLOB.base_markers_list)
 		if (myMarker.available == TRUE)
 			return myMarker
-	
 
-	
+
+
 /datum/playerMissionStatus
 	var/ckey
 	var/name
-	var/isReady 
+	var/isReady
 
 /datum/mission/proc/on_mission_loaded(datum/lazy_template/source, loaded_atom_movables, loaded_turfs, loaded_areas)
 	GenerateTerrain(loaded_areas)
 	PopulateTerrain(loaded_areas)
 	FindMarkers(loaded_atom_movables)
 	EndOfMissonLoadingCycle()
-	
-/datum/mission/proc/GenerateTerrain(var/loaded_areas)	
+
+/datum/mission/proc/GenerateTerrain(var/loaded_areas)
 	for(var/area/A in loaded_areas)
 		A.RunTerrainGeneration()
 
@@ -163,11 +163,11 @@
 			var/datum/action/ShowMissionReport/R = new
 			R.myMission = src
 			var/client/C = player.client
-			C.player_details.player_actions += R
+			C.persistent_client.player_actions += R
 			R.Grant(C.mob)
 			to_chat(C,"<span class='infoplain'><a href='?src=[REF(R)];report=1'>Show mission report again</a></span>")
 		missionEndReport += "</ul>"
-		
+
 /datum/mission/proc/show_mission_report(client/C, report_type = null)
 	var/datum/browser/roundend_report = new(C, "Mission Report")
 	roundend_report.width = 800

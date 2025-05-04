@@ -4,7 +4,7 @@
 	base_icon_state = "kineticgun"
 	desc = "A self recharging gun. Holds one shot at a time."
 	automatic_charge_overlays = FALSE
-	cell_type = /obj/item/stock_parts/power_store/cell/emproof
+	modular_initial_slots = list(/obj/item/stock_parts/power_store/cell/emproof)
 	/// If set to something, instead of an overlay, sets the icon_state directly.
 	var/no_charge_state
 	/// Does it hold charge when not put away?
@@ -58,14 +58,14 @@
 		deltimer(recharge_timerid)
 
 /obj/item/gun/energy/recharge/proc/empty()
-	if(cell)
-		cell.use(cell.charge)
+	if(has_power_cell())
+		cells_consume_charge(cells_get_charge())
 	update_appearance()
 
 /obj/item/gun/energy/recharge/proc/attempt_reload(set_recharge_time)
-	if(!cell)
+	if(!has_power_cell())
 		return
-	if(cell.charge == cell.maxcharge)
+	if (cells_get_charge() == cells_get_max_charge())
 		return
 	if(!set_recharge_time)
 		set_recharge_time = recharge_time
@@ -80,7 +80,7 @@
 	recharge_timerid = addtimer(CALLBACK(src, PROC_REF(reload)), set_recharge_time * carried, TIMER_STOPPABLE)
 
 /obj/item/gun/energy/recharge/proc/reload()
-	cell.give(cell.maxcharge)
+	cells_give_power(cells_get_max_charge())
 	if(!suppressed && recharge_sound)
 		playsound(src.loc, recharge_sound, 60, TRUE)
 	else

@@ -369,16 +369,16 @@
 
 //ENERGY WEAPONS//
 /obj/item/gun/energy/ninjadrain_act(mob/living/carbon/human/ninja, obj/item/mod/module/hacker/hacking_module)
-	if(cell.charge == 0)
+	if(cells_get_charge() == 0)
 		balloon_alert(ninja, "no energy!")
 		return COMPONENT_CANCEL_ATTACK_CHAIN
 
 	if(!do_after(ninja, 1.5 SECONDS, target = src, hidden = TRUE))
 		return COMPONENT_CANCEL_ATTACK_CHAIN
 
-	hacking_module.mod.add_charge(cell.charge)
-	hacking_module.charge_message(src, cell.charge)
-	cell.charge = 0
+	hacking_module.mod.add_charge(cells_get_charge())
+	hacking_module.charge_message(src, cells_get_charge())
+	cells_set_charge(0)
 	update_appearance()
 	visible_message(span_warning("[ninja] drains the energy from the [src]!"))
 	do_sparks(number = 3, cardinal_only = FALSE, source = src)

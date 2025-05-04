@@ -531,7 +531,7 @@ GLOBAL_LIST_INIT(command_strings, list(
 	if(!istype(item_to_drop, /obj/item/gun/energy))
 		return
 	var/obj/item/gun/energy/dropped_gun = item_to_drop
-	dropped_gun.cell.charge = 0
+	dropped_gun.cells_set_charge(0)
 	dropped_gun.update_appearance()
 
 /mob/living/basic/bot/proc/bot_reset(bypass_ai_reset = FALSE)

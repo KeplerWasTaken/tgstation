@@ -793,10 +793,10 @@
 	..()
 	var/obj/item/gun/energy/e_gun/advtaser/cyborg/taser = locate(/obj/item/gun/energy/e_gun/advtaser/cyborg) in basic_modules
 	if(taser)
-		if(taser.cell.charge < taser.cell.maxcharge)
+		if(taser.cells_get_charge() < taser.cells_get_max_charge())
 			. = TRUE
 			var/obj/item/ammo_casing/energy/shot = taser.ammo_type[taser.select]
-			taser.cell.give(shot.e_cost * coeff)
+			taser.cells_give_power(shot.e_cost * coeff)
 			taser.update_appearance()
 		else
 			taser.charge_timer = 0

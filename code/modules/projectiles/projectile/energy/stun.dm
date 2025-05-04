@@ -118,7 +118,7 @@
 /datum/status_effect/tased/proc/can_tase_with(datum/with_what)
 	if(istype(with_what, /obj/item/gun/energy))
 		var/obj/item/gun/energy/taser_gun = with_what
-		if(isnull(taser_gun.cell))
+		if(!taser_gun.has_power_cell())
 			return FALSE
 
 	else if(istype(with_what, /obj/machinery))
@@ -135,7 +135,7 @@
 		return FALSE
 	if(istype(with_what, /obj/item/gun/energy))
 		var/obj/item/gun/energy/taser_gun = with_what
-		if(!taser_gun.cell?.use(energy_drain * seconds_between_ticks))
+		if(!taser_gun.has_power_cell() && taser_gun.cells_consume_charge(energy_drain * seconds_between_ticks))
 			return FALSE
 		taser_gun.update_appearance()
 		return TRUE

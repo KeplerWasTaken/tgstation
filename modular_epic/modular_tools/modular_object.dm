@@ -11,7 +11,10 @@
 #define ATTACHMENT_CROWBAR_BODY "attachment_crowbarbody"
 #define ATTACHMENT_CROWBAR_TIP "attachment_crowbarbody"
 
-#define ATTACHMENT_CELL "attachment_cell"
+#define ATTACHMENT_CELL_SMALL "attachment_cell_small"
+#define ATTACHMENT_CELL_MEDIUM "attachment_cell_medium"
+#define ATTACHMENT_CELL_LARGE "attachment_cell_large"
+
 #define ATTACHMENT_FUELTANK "attachment_fueltank"
 
 #define ATTACHMENT_MAGIC_PAINT "attachment_magic_paint"
@@ -37,17 +40,33 @@
 #define QUALITY_IMPRESSIVE 0.65
 #define QUALITY_EXCEPTIONAL 0.5
 
-/obj/item/modular_attachment
+// For easier generation of attachments
+/obj/item
 	var/quality = QUALITY_NORMAL
+	// Where it can be inserted
 	var/applicable_slots = list()
 	var/modifications = list()
+
+	// Toggle to true for easier creation of modular parts
+	var/is_attachment = FALSE
+
+	// Which slot it is using after being inserted, don't touch this
 	var/modular_slot_used = null
 
-/obj/item/modular_attachment/proc/GenerateComponent()
+/obj/item/modular_attachment
+	is_attachment = TRUE
+
+/obj/item/proc/GenerateAttachmentComponent()
 	var/datum/component/modular_attachment/attachment = AddComponent(/datum/component/modular_attachment)
 	attachment.modifications = modifications
 	attachment.applicable_slots = applicable_slots
 
-/obj/item/modular_attachment/New()
+/obj/item/New()
 	. = ..()
-	GenerateComponent()
+	if (is_attachment)
+		ConsiderBecomingAttachment()
+
+/obj/item/proc/ConsiderBecomingAttachment()
+	if (is_attachment)
+		GenerateAttachmentComponent()
+
