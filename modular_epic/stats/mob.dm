@@ -4,7 +4,7 @@
 /mob/Initialize(mapload)
 	. = ..()
 	stats = new/datum/stat_holder(src)
-	
+
 /mob/verb/view_stats()
 	set category = "IC"
 	set name = "View Stats"
@@ -20,6 +20,6 @@
 			msg += "[i] - [the_stat.getLevelOfStat()] - [the_stat.value]\n"
 		msg += "<b>Level [current.stats.level]</b> - [current.stats.xp]/[current.stats.get_xp_needed_for_level_up()]"
 		msg += "</span>"
-		to_chat(user, examine_block(msg))
+		to_chat(user, span_info(msg))
 	else
 		to_chat(user, span_notice("Strange, isn't it? You can't seem to recall any particular skill."))

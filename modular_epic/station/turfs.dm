@@ -49,7 +49,7 @@
 
 /datum/map_generator/cave_generator/icemoon/meadows
 	weighted_open_turf_types = list(/turf/open/floor/planetary/underground = 1)
-	
+
 	weighted_closed_turf_types = list(/turf/closed/mineral/planetary/underground = 1)
 
 /area/icemoon/underground/unexplored/rivers/deep/meadows
@@ -67,7 +67,7 @@
 	)
 
 /area/planet
-	has_gravity = STANDARD_GRAVITY
+	default_gravity = STANDARD_GRAVITY
 	ambience_index = AMBIENCE_AWAY
 	name = "Planet Area"
 	icon = 'icons/area/areas_away_missions.dmi'
@@ -86,7 +86,7 @@
 	icon_state = "away"
 	area_flags = CAVES_ALLOWED | FLORA_ALLOWED
 	map_generator = /datum/map_generator/cave_generator/planetary/mission/rocky
-	
+
 /area/planet/mission/surface/mission/rocky/objective
 	name = "Away mission - Objective"
 
@@ -94,7 +94,7 @@
 	name = "Away mission - Mining - Safe"
 	icon = 'icons/area/areas_away_missions.dmi'
 	icon_state = "away2"
-	has_gravity = STANDARD_GRAVITY
+	default_gravity = STANDARD_GRAVITY
 	ambience_index = AMBIENCE_AWAY
 	sound_environment = SOUND_ENVIRONMENT_PLAIN
 	area_flags = FLORA_ALLOWED | CAVES_ALLOWED
@@ -109,7 +109,7 @@
 	flora_spawn_chance = 10
 	feature_spawn_chance = 0
 	initial_closed_chance = 35
-	
+
 /datum/map_generator/cave_generator/planetary/mission/rocky/safe
 	name = "Safe Area"
 	weighted_open_turf_types = list(/turf/open/floor/planetary/surface = 85	, /turf/open/floor/planetary/underground = 15)

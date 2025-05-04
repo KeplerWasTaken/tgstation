@@ -21,7 +21,7 @@
 	COOLDOWN_START(src, party_cooldown, rand(PARTY_COOLDOWN_LENGTH_MIN, PARTY_COOLDOWN_LENGTH_MAX))
 
 	// Epicstation fix
-	if (!GLOB.bar_areas || GLOB.bar_areas.len < 0)
+	if (!GLOB.bar_areas || GLOB.bar_areas.len == 0)
 		return FALSE
 	var/pizza_type_to_spawn = pick(list(
 		/obj/item/pizzabox/margherita,
