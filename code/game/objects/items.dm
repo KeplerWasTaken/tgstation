@@ -281,15 +281,21 @@
 			hitsound = SFX_SWING_HIT
 
 	add_weapon_description()
-
+	//epicstation change
+	add_attachments_description()
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOB_NEW_ITEM, src)
 
 	setup_reskinning()
 
 
-	//epicstation edit, adds modular parts to the item
+	//epicstation edits, adds modular parts to the item
+	if (is_attachment)
+		ConsiderBecomingAttachment()
+	// We need a UID, surprised it took tens of years~! ...Probably I'm missing something lmao
+	MakeUID()
+	// Some items have pre-installed
 	InitializeModularAttachments()
-	
+
 /obj/item/Destroy(force)
 	// This var exists as a weird proxy "owner" ref
 	// It's used in a few places. Stop using it, and optimially replace all uses please
@@ -382,6 +388,9 @@
 /obj/item/proc/add_weapon_description()
 	AddElement(/datum/element/weapon_description)
 
+// epicstation change
+/obj/item/proc/add_attachments_description()
+	AddComponent(/datum/component/attachments_description)
 /**
  * Checks if an item is allowed to be used on an atom/target
  * Returns TRUE if allowed.
@@ -518,10 +527,6 @@
 		research_msg += "None"
 	research_msg += "."
 	return research_msg.Join()
-
-/obj/item/interact(mob/user)
-	add_fingerprint(user)
-	ui_interact(user)
 
 /obj/item/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
 	add_fingerprint(usr)

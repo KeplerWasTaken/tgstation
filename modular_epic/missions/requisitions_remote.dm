@@ -2,8 +2,8 @@
 	name = "Requisitions remote"
 	desc = "If during a mission you run into a supplies emergency, don't worry! For an amount of credits, those worries will wash away."
 	icon = 'icons/obj/devices/remote.dmi'
-	icon_state = "generic_delivery"
-	inhand_icon_state = "generic_delivery"
+	icon_state = "designator_syndicate"
+	inhand_icon_state = "nukietalkie"
 	lefthand_file = 'icons/mob/inhands/items/devices_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/items/devices_righthand.dmi'
 	var/obj/machinery/computer/order_console/requisitions_remote/builtin_order_console

@@ -66,6 +66,13 @@
 	using.screen_loc = ui_human_navigate
 	static_inventory += using
 
+	//epic station edit
+	using = new /atom/movable/screen/attachments(null, src)
+	using.icon = ui_style
+	using.screen_loc = ui_human_attachments
+	static_inventory += using
+	// end
+
 	using = new /atom/movable/screen/area_creator(null, src)
 	using.icon = ui_style
 	using.screen_loc = ui_human_area

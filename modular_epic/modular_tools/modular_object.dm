@@ -45,6 +45,7 @@
 	var/quality = QUALITY_NORMAL
 	// Where it can be inserted
 	var/applicable_slots = list()
+	// What modifications it would do
 	var/modifications = list()
 
 	// Toggle to true for easier creation of modular parts
@@ -60,11 +61,6 @@
 	var/datum/component/modular_attachment/attachment = AddComponent(/datum/component/modular_attachment)
 	attachment.modifications = modifications
 	attachment.applicable_slots = applicable_slots
-
-/obj/item/New()
-	. = ..()
-	if (is_attachment)
-		ConsiderBecomingAttachment()
 
 /obj/item/proc/ConsiderBecomingAttachment()
 	if (is_attachment)

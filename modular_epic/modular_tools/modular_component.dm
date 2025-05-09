@@ -1,5 +1,6 @@
 #define COMSIG_UPGRADE_APPVAL "comsig_upgrade_appval"
 #define COMSIG_UPGRADE_ADDVAL "comsig_upgrade_addval"
+#define COMSIG_UPGRADE_REMOVE "comsig_upgrade_remove"
 
 /datum/component/modular_attachment
 	var/slot_used = null
@@ -27,6 +28,33 @@
 		return FALSE
 	return TRUE
 
+/datum/component/modular_attachment/proc/TryUninstall(obj/item/source, mob/living/user, obj/item/target)
+	if (AttachmentCanUninstall())
+		AttachmentUninstall(source, target, user)
+
+/datum/component/modular_attachment/proc/AttachmentUninstall(obj/item/attachment, obj/item/modular_tool, mob/living/user)
+	if(user)
+		user.visible_message(span_notice("[user] starts removing [parent] from [modular_tool]"), span_notice("You start removoing \the [attachment] from \the [modular_tool]"))
+		if(!modular_tool.use_tool(user = user, target = modular_tool, delay = 1 SECONDS))
+			return FALSE
+		to_chat(user, span_notice("You have successfully uninstalled \the [parent] from  \the [modular_tool]"))
+	//If we get here, we succeeded in the uninstalling
+	user.put_in_hands(attachment)
+	modular_tool.modular_attachments.Remove(attachment)
+	UnregisterSignal(modular_tool, COMSIG_UPGRADE_APPVAL, PROC_REF(apply_values))
+	UnregisterSignal(modular_tool, COMSIG_UPGRADE_ADDVAL, PROC_REF(add_values))
+	UnregisterSignal(parent, COMSIG_UPGRADE_REMOVE, PROC_REF(TryUninstall))
+	if (slot_used == ATTACHMENT_CELL_SMALL || slot_used == ATTACHMENT_CELL_MEDIUM || slot_used == ATTACHMENT_CELL_LARGE)
+		modular_tool.cells -= parent
+	attachment.modular_slot_used = null
+	modular_tool.modular_slots_available[slot_used]++
+	slot_used = null
+	modular_tool.RefreshUpgrades()
+	return TRUE
+
+/datum/component/modular_attachment/proc/AttachmentCanUninstall()
+	return TRUE
+
 /datum/component/modular_attachment/proc/GetApplicableSlot(obj/item/target)
 	for(var/applicable_slot in applicable_slots)
 		if (target.modular_slots_available[applicable_slot] && target.modular_slots_available[applicable_slot] > 0)
@@ -47,6 +75,7 @@
 	target.modular_attachments.Add(attachment)
 	RegisterSignal(target, COMSIG_UPGRADE_APPVAL, PROC_REF(apply_values))
 	RegisterSignal(target, COMSIG_UPGRADE_ADDVAL, PROC_REF(add_values))
+	RegisterSignal(parent, COMSIG_UPGRADE_REMOVE, PROC_REF(TryUninstall))
 	slot_used = GetApplicableSlot(target)
 	if (slot_used == ATTACHMENT_CELL_SMALL || slot_used == ATTACHMENT_CELL_MEDIUM || slot_used == ATTACHMENT_CELL_LARGE)
 		target.cells += parent

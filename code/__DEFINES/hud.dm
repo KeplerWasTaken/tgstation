@@ -70,6 +70,8 @@
 #define ui_building "EAST-4:22,SOUTH:21"
 #define ui_language_menu "EAST-4:6,SOUTH:21"
 #define ui_navigate_menu "EAST-4:6,SOUTH:5"
+//epicstation edit
+#define ui_attachments_menu "EAST-4:22,SOUTH:37"
 
 //Upper left (action buttons)
 #define ui_action_palette "WEST+0:23,NORTH-1:5"
@@ -107,7 +109,10 @@
 #define ui_human_crafting "EAST-3:24,SOUTH+1:7"
 #define ui_human_navigate "EAST-3:7,SOUTH+1:7"
 #define ui_human_language "EAST-3:7,SOUTH+1:24"
-#define ui_human_area "EAST-3:24,SOUTH+1:24"
+#define ui_human_area "EAST-3:24,SOUTH+1:41"
+
+//epic station edit
+#define ui_human_attachments "EAST-3:24,SOUTH+1:24"
 
 //Drones
 #define ui_drone_drop "CENTER+1:18,SOUTH:5"

@@ -106,9 +106,8 @@
 		var/obj/item/machine_remote/remote = item_in_hand
 		if(remote.controlling_machine_or_bot == src_object)
 			return UI_INTERACTIVE
-	//epicstation change make the UI remain open if UI is in hand(DANGER FIX THIS)
+	//epicstation change make the UI remain open if UI is in hand (TODO: FIND A BETTER WAY, SOME DAYYYYYYYYYYY)
 	if(istype(item_in_hand, /obj/item/requisitions_remote))
-		var/obj/item/machine_remote/remote = item_in_hand
 		return UI_INTERACTIVE
 	//epicstation change end
 	// If the object is obscured, close it.
