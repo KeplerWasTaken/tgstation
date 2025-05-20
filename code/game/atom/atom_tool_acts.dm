@@ -60,6 +60,66 @@
 
 	return NONE
 
+//epicstation edit
+/obj/item/proc/tool_open_radial_menu(mob/user, var/list/tool_radial_menu)
+	return show_radial_menu(user, src, tool_radial_menu, custom_check = CALLBACK(src, PROC_REF(check_tool_menu), user), radius = 38, require_near = TRUE)
+
+/obj/item/proc/check_tool_menu(mob/user)
+	if(!istype(user))
+		return FALSE
+	if(user.incapacitated || !user.Adjacent(src))
+		return FALSE
+	return TRUE
+
+/obj/item/proc/get_tool_radial_menu(mob/user, var/list/accepted_tools)
+	var/list/tool_list = list()
+	if (tool_qualities[TOOL_CROWBAR] && LAZYFIND(accepted_tools, TOOL_CROWBAR) > 0)
+		tool_list += list("Crowbar" = image(icon = 'icons/obj/tools.dmi', icon_state = "crowbar"))
+	if (tool_qualities[TOOL_MULTITOOL] && LAZYFIND(accepted_tools, TOOL_MULTITOOL) > 0)
+		tool_list += list("Multitool" = image(icon = 'icons/obj/devices/tool.dmi', icon_state = "multitool"))
+	if (tool_qualities[TOOL_SCREWDRIVER] && LAZYFIND(accepted_tools, TOOL_SCREWDRIVER) > 0)
+		tool_list += list("Screwdriver" = image(icon = 'icons/obj/tools.dmi', icon_state = "screwdriver_map"))
+	if (tool_qualities[TOOL_WIRECUTTER ]&& LAZYFIND(accepted_tools, TOOL_WIRECUTTER) > 0)
+		tool_list += list("Wirecutters" = image(icon = 'icons/obj/tools.dmi', icon_state = "cutters"))
+	if (tool_qualities[TOOL_WRENCH] && LAZYFIND(accepted_tools, TOOL_WRENCH) > 0)
+		tool_list += list("Wrench" = image(icon = 'icons/obj/tools.dmi', icon_state = "wrench"))
+	if (tool_qualities[TOOL_WELDER] && LAZYFIND(accepted_tools, TOOL_WELDER) > 0)
+		tool_list += list("Welding Tool" = image(icon = 'icons/obj/tools.dmi', icon_state = "welder"))
+	return tool_list
+
+/obj/item/proc/convert_tool_radial_menu_to_tool(var/radial_menu_result)
+	var/tool_behaviour
+	switch(radial_menu_result)
+		if("Retractor")
+			tool_behaviour = TOOL_RETRACTOR
+		if("Hemostat")
+			tool_behaviour = TOOL_HEMOSTAT
+		if("Cautery")
+			tool_behaviour = TOOL_CAUTERY
+		if("Drill")
+			tool_behaviour = TOOL_DRILL
+		if("Scalpel")
+			tool_behaviour = TOOL_SCALPEL
+		if("Saw")
+			tool_behaviour = TOOL_SAW
+		if("Bonesetter")
+			tool_behaviour = TOOL_BONESET
+		if("Blood Filter")
+			tool_behaviour = TOOL_BLOODFILTER
+		if("Crowbar")
+			tool_behaviour = TOOL_CROWBAR
+		if("Multitool")
+			tool_behaviour = TOOL_MULTITOOL
+		if("Screwdriver")
+			tool_behaviour = TOOL_SCREWDRIVER
+		if("Wirecutters")
+			tool_behaviour = TOOL_WIRECUTTER
+		if("Wrench")
+			tool_behaviour = TOOL_WRENCH
+		if("Welding Tool")
+			tool_behaviour = TOOL_WELDER
+	return tool_behaviour
+//end
 /**
  *
  * ## Tool Act
@@ -81,12 +141,38 @@
 	SHOULD_CALL_PARENT(TRUE)
 	PROTECTED_PROC(TRUE)
 
-	var/tool_type = tool.tool_behaviour
-	if(!tool_type)
-		return NONE
-
 	var/is_right_clicking = LAZYACCESS(modifiers, RIGHT_CLICK)
 	var/is_left_clicking = !is_right_clicking
+
+	var/tool_type = tool.tool_behaviour
+
+	//epicstation edit
+	if (tool.tool_qualities)
+		tool_type = null
+		if (LAZYLEN(tool.tool_qualities) > 1)
+
+			var/list/radial_menu
+
+			if (is_right_clicking)
+				radial_menu = tool.get_tool_radial_menu(tool.tool_qualities, accepted_tools_secondary)
+			else
+				radial_menu = tool.get_tool_radial_menu(tool.tool_qualities, accepted_tools)
+
+			if (LAZYLEN(radial_menu) == 0)
+				return NONE
+
+			var/pick =  tool.tool_open_radial_menu(user, radial_menu)
+
+			if(!pick)
+				return NONE
+			else
+				tool_type = tool.convert_tool_radial_menu_to_tool(pick)
+		else if (LAZYLEN(tool.tool_qualities) == 1)
+			tool_type = tool.tool_qualities[1]
+	//end
+	if(!tool_type)
+		return NONE
+	tool.tool_behaviour = tool_type
 
 	var/list/processing_recipes = list()
 	var/signal_result = is_left_clicking \
@@ -329,7 +415,8 @@
 
 // epic station add oredrille act and secondary act
 /atom/proc/oredriller_act(mob/living/user, obj/item/tool)
-    return
+	return
 
 /atom/proc/oredriller_act_secondary(mob/living/user, obj/item/tool)
-    return
+	return
+//end

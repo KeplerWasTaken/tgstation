@@ -13,6 +13,7 @@
 	//Weapon upgrades
 	var/list/applicable_slots
 	var/list/modifications = list() //variable name(string) -> num
+	var/obj/item/item_installed_in =  null
 
 /datum/component/modular_attachment/RegisterWithParent()
 	. = ..()
@@ -49,6 +50,7 @@
 	attachment.modular_slot_used = null
 	modular_tool.modular_slots_available[slot_used]++
 	slot_used = null
+	item_installed_in = null
 	modular_tool.RefreshUpgrades()
 	return TRUE
 
@@ -72,6 +74,7 @@
 	//If we get here, we succeeded in the applying
 	var/obj/item/modular_attachment/attachment = parent
 	attachment.forceMove(target)
+	item_installed_in = target
 	target.modular_attachments.Add(attachment)
 	RegisterSignal(target, COMSIG_UPGRADE_APPVAL, PROC_REF(apply_values))
 	RegisterSignal(target, COMSIG_UPGRADE_ADDVAL, PROC_REF(add_values))
@@ -105,6 +108,19 @@
 
 /datum/component/modular_attachment/proc/add_values(obj/item/target)
 	add_item_values(target)
+
 /datum/component/modular_attachment/proc/get_attachment()
 	var/obj/item/attachment = parent
 	return attachment
+
+/datum/component/modular_attachment/UnregisterFromParent()
+	if (item_installed_in)
+		UnregisterSignal(item_installed_in, COMSIG_UPGRADE_APPVAL, PROC_REF(apply_values))
+		UnregisterSignal(item_installed_in, COMSIG_UPGRADE_ADDVAL, PROC_REF(add_values))
+	UnregisterSignal(parent, COMSIG_UPGRADE_REMOVE, PROC_REF(TryUninstall))
+
+	// If we're being unregistered / deleted but our parent is sticking around,
+	// force an overlay update to get rid of our item appearance
+	if(!QDELING(parent))
+		var/datum/action/parent_action = parent
+		parent_action.build_all_button_icons(UPDATE_BUTTON_OVERLAY)

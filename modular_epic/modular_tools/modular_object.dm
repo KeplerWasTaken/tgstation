@@ -62,7 +62,11 @@
 	attachment.modifications = modifications
 	attachment.applicable_slots = applicable_slots
 
+// Also works for regenerating
 /obj/item/proc/ConsiderBecomingAttachment()
 	if (is_attachment)
+		var/datum/component/modular_attachment/current_attachment_component = GetComponent(/datum/component/modular_attachment)
+		if (current_attachment_component)
+			qdel(current_attachment_component)
 		GenerateAttachmentComponent()
 

@@ -35,12 +35,13 @@
 	id_trim = /datum/id_trim/job/assistant
 	belt = /obj/item/modular_computer/pda/assistant
 	shoes = /obj/item/clothing/shoes/jackboots
-	uniform = /obj/item/clothing/under/syndicate/tacticool 
+	uniform = /obj/item/clothing/under/syndicate/tacticool
 	suit = /obj/item/clothing/suit/armor/vest/alt
 	glasses = /obj/item/clothing/glasses/sunglasses
 	gloves = /obj/item/clothing/gloves/fingerless
 	back = /obj/item/storage/backpack/satchel
 	suit_store = /obj/item/gun/ballistic/automatic/pistol/m1911
+	l_hand = /obj/item/diverse_omni_tool
 
 /datum/outfit/job/contractor/pre_equip(mob/living/carbon/human/target)
 	..()
